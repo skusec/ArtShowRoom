@@ -3,7 +3,7 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { RouteNames } from '../../constants';
-import RadService from '../../services/RadService';
+import RadService from '../../services/radovi/RadService';
 
 
 export default function RadPromjena() {

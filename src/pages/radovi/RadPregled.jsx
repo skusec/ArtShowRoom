@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-import RadService from '../../services/RadService';
+import RadService from '../../services/radovi/RadService';
 
 
 export default function RadPregled() {
