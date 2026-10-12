@@ -5,8 +5,9 @@ import RadPregled from './pages/radovi/RadPregled';
 import RadNovi from './pages/radovi/RadNovi';
 import RadPromjena from './pages/radovi/RadPromjena';
 import Izbornik from './components/Izbornik';
+import KategorijaPregled from './pages/kategorije/KategorijaPregled';
 
-import { RouteNames } from './constants';
+import { IME_APLIKACIJE, RouteNames } from './constants';
 
 function App() {
   return (
@@ -35,7 +36,21 @@ function App() {
           element={<RadPromjena />}
         />
 
+        <Route
+          path={RouteNames.KATEGORIJE}
+          element={<KategorijaPregled />}
+        />
+
       </Routes>
+
+      <div className="mt-auto">
+        <hr />
+
+        <footer className="pb-3">
+          &copy; {IME_APLIKACIJE}
+        </footer>
+      </div>
+
     </>
   );
 }

@@ -1,3 +1,4 @@
+import { NumericFormat } from 'react-number-format';
 import { useEffect, useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -76,7 +77,17 @@ export default function RadPregled() {
               <td>{rad.naziv}</td>
               <td>{rad.kategorija}</td>
               <td>{rad.tehnika}</td>
-              <td>{rad.cijena} €</td>
+              <td>
+                <NumericFormat
+                  value={rad.cijena}
+                  displayType="text"
+                  thousandSeparator="."
+                  decimalSeparator=","
+                  decimalScale={2}
+                  fixedDecimalScale
+                  suffix=" €"
+                />
+              </td>
               <td>{rad.dostupan ? 'Da' : 'Ne'}</td>
 
               <td>
