@@ -63,7 +63,7 @@ export default function RadPromjena() {
 
   }
 
-  
+
 
 
   if (!rad) {
@@ -77,7 +77,7 @@ export default function RadPromjena() {
 
       <Form onSubmit={obradiSubmit}>
 
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3 text-start">
           <Form.Label>Naziv</Form.Label>
 
           <Form.Control
@@ -88,7 +88,7 @@ export default function RadPromjena() {
         </Form.Group>
 
 
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3 text-start">
           <Form.Label>Kategorija</Form.Label>
 
           <Form.Control
@@ -99,7 +99,7 @@ export default function RadPromjena() {
         </Form.Group>
 
 
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3 text-start">
           <Form.Label>Tehnika</Form.Label>
 
           <Form.Control
@@ -110,7 +110,7 @@ export default function RadPromjena() {
         </Form.Group>
 
 
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3 text-start">
           <Form.Label>Cijena</Form.Label>
 
           <Form.Control
@@ -122,10 +122,16 @@ export default function RadPromjena() {
         </Form.Group>
 
 
-        <Form.Group className="mb-3">
-          <Form.Check
+        <Form.Group
+          className="mb-3 text-start d-flex align-items-center gap-2"
+          controlId="dostupan"
+        >
+          <Form.Label className="mb-0">
+            Dostupan
+          </Form.Label>
+
+          <Form.Check.Input
             type="checkbox"
-            label="Dostupan"
             checked={dostupan}
             onChange={(e) => setDostupan(e.target.checked)}
           />
