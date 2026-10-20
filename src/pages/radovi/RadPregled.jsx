@@ -4,16 +4,19 @@ import { Button, Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 import RadService from '../../services/radovi/RadService';
+import KategorijaService from '../../services/kategorije/KategorijaService';
 
 
 export default function RadPregled() {
 
   const [radovi, setRadovi] = useState([]);
+  const [kategorije, setKategorije] = useState([]);
   const navigate = useNavigate();
 
 
   useEffect(() => {
     ucitajRadove();
+    ucitajKategorije();
   }, []);
 
 
@@ -23,6 +26,14 @@ export default function RadPregled() {
 
     // Nova kopija arraya da React uvijek registrira promjenu
     setRadovi([...odgovor.data]);
+
+  }
+
+  async function ucitajKategorije() {
+
+    const odgovor = await KategorijaService.get();
+
+    setKategorije(odgovor.data);
 
   }
 
@@ -75,7 +86,15 @@ export default function RadPregled() {
 
               <td>{rad.id}</td>
               <td>{rad.naziv}</td>
-              <td>{rad.kategorija}</td>
+              <td>
+                {
+                  rad.kategorijaId
+                    ? kategorije.find(
+                      kategorija => kategorija.id === Number(rad.kategorijaId)
+                    )?.naziv
+                    : rad.kategorija
+                }
+              </td>
               <td>{rad.tehnika}</td>
               <td>
                 <NumericFormat

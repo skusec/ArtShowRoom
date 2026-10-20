@@ -1,9 +1,20 @@
+import { kategorije as pocetneKategorije } from './KategorijaPodaci';
+
+
 const STORAGE_KEY = 'kategorije';
 
 function dohvatiSveIzStorage() {
   const podaci = localStorage.getItem(STORAGE_KEY);
 
-  return podaci ? JSON.parse(podaci) : [];
+  if (podaci === null) {
+    const pocetniPodaci = [...pocetneKategorije];
+
+    spremiUStorage(pocetniPodaci);
+
+    return pocetniPodaci;
+  }
+
+  return JSON.parse(podaci);
 }
 
 function spremiUStorage(podaci) {

@@ -6,6 +6,8 @@ import RadNovi from './pages/radovi/RadNovi';
 import RadPromjena from './pages/radovi/RadPromjena';
 import Izbornik from './components/Izbornik';
 import KategorijaPregled from './pages/kategorije/KategorijaPregled';
+import KategorijaNovi from './pages/kategorije/KategorijaNovi';
+import KategorijaPromjena from './pages/kategorije/KategorijaPromjena';
 
 import { IME_APLIKACIJE, RouteNames } from './constants';
 
@@ -39,6 +41,16 @@ function App() {
         <Route
           path={RouteNames.KATEGORIJE}
           element={<KategorijaPregled />}
+        />
+
+        <Route
+          path={RouteNames.KATEGORIJE_NOVI}
+          element={<KategorijaNovi />}
+        />
+
+        <Route
+          path={RouteNames.KATEGORIJE_PROMJENA}
+          element={<KategorijaPromjena />}
         />
 
       </Routes>

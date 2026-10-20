@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { RouteNames } from '../../constants';
 import RadService from '../../services/radovi/RadService';
+import KategorijaService from '../../services/kategorije/KategorijaService';
 
 
 export default function RadNovi() {
@@ -11,6 +12,21 @@ export default function RadNovi() {
   const navigate = useNavigate();
 
   const [dostupan, setDostupan] = useState(false);
+  const [kategorije, setKategorije] = useState([]);
+
+  useEffect(() => {
+
+    async function ucitajKategorije() {
+
+      const odgovor = await KategorijaService.get();
+
+      setKategorije(odgovor.data);
+
+    }
+
+    ucitajKategorije();
+
+  }, []);
 
 
   async function dodaj(rad) {
@@ -32,7 +48,7 @@ export default function RadNovi() {
 
     dodaj({
       naziv: podaci.get('naziv'),
-      kategorija: podaci.get('kategorija'),
+      kategorijaId: Number(podaci.get('kategorijaId')),
       tehnika: podaci.get('tehnika'),
       cijena: parseFloat(podaci.get('cijena')),
       dostupan: dostupan
@@ -61,11 +77,24 @@ export default function RadNovi() {
         <Form.Group className="mb-3 text-start">
           <Form.Label>Kategorija</Form.Label>
 
-          <Form.Control
-            type="text"
-            name="kategorija"
+          <Form.Select
+            name="kategorijaId"
             required
-          />
+            defaultValue=""
+          >
+            <option value="" disabled>
+              Odaberi kategoriju
+            </option>
+
+            {kategorije.map((kategorija) => (
+              <option
+                key={kategorija.id}
+                value={kategorija.id}
+              >
+                {kategorija.naziv}
+              </option>
+            ))}
+          </Form.Select>
         </Form.Group>
 
 

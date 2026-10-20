@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { RouteNames } from '../../constants';
 import RadService from '../../services/radovi/RadService';
+import KategorijaService from '../../services/kategorije/KategorijaService';
 
 
 export default function RadPromjena() {
@@ -13,6 +14,7 @@ export default function RadPromjena() {
 
   const [rad, setRad] = useState(null);
   const [dostupan, setDostupan] = useState(false);
+  const [kategorije, setKategorije] = useState([]);
 
 
   useEffect(() => {
@@ -29,6 +31,16 @@ export default function RadPromjena() {
     }
 
     ucitajRad();
+
+    async function ucitajKategorije() {
+
+      const odgovor = await KategorijaService.get();
+
+      setKategorije(odgovor.data);
+
+    }
+
+    ucitajKategorije();
 
   }, [params.id]);
 
@@ -91,11 +103,30 @@ export default function RadPromjena() {
         <Form.Group className="mb-3 text-start">
           <Form.Label>Kategorija</Form.Label>
 
-          <Form.Control
-            type="text"
-            name="kategorija"
-            defaultValue={rad.kategorija}
-          />
+          <Form.Select
+            name="kategorijaId"
+            defaultValue={
+              rad.kategorijaId
+                ? rad.kategorijaId
+                : kategorije.find(
+                  kategorija => kategorija.naziv === rad.kategorija
+                )?.id || ''
+            }
+            required
+          >
+            <option value="" disabled>
+              Odaberi kategoriju
+            </option>
+
+            {kategorije.map((kategorija) => (
+              <option
+                key={kategorija.id}
+                value={kategorija.id}
+              >
+                {kategorija.naziv}
+              </option>
+            ))}
+          </Form.Select>
         </Form.Group>
 
 

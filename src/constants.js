@@ -6,6 +6,8 @@ export const RouteNames = {
   RADOVI_NOVI: '/radovi/novi',
   RADOVI_PROMJENA: '/radovi/:id',
   KATEGORIJE: '/kategorije',
+  KATEGORIJE_NOVI: '/kategorije/novi',
+  KATEGORIJE_PROMJENA: '/kategorije/:id',
 };
 
 // memorija, localStorage, kasnije API

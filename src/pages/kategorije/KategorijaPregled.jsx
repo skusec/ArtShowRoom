@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import { RouteNames } from '../../constants';
 
 import KategorijaService from '../../services/kategorije/KategorijaService';
 
 export default function KategorijaPregled() {
 
   const [kategorije, setKategorije] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     ucitajKategorije();
@@ -35,6 +39,13 @@ export default function KategorijaPregled() {
     <>
       <h1>Pregled kategorija</h1>
 
+      <Link
+        to={RouteNames.KATEGORIJE_NOVI}
+        className="btn btn-success w-100 my-3"
+      >
+        Dodaj novu kategoriju
+      </Link>
+
       <Table striped bordered hover responsive>
         <thead>
           <tr>
@@ -53,12 +64,29 @@ export default function KategorijaPregled() {
               <td>{kategorija.opis}</td>
 
               <td>
+
+                <Button
+                  variant="warning"
+                  onClick={() => navigate(`/kategorije/${kategorija.id}`)}
+                >
+                  Uredi
+                </Button>
+
+                {' '}
+
+
+
+
                 <Button
                   variant="danger"
                   onClick={() => obrisi(kategorija.id)}
                 >
                   Obriši
                 </Button>
+
+
+
+
               </td>
             </tr>
           ))}
