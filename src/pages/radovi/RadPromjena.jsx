@@ -105,13 +105,7 @@ export default function RadPromjena() {
 
           <Form.Select
             name="kategorijaId"
-            defaultValue={
-              rad.kategorijaId
-                ? rad.kategorijaId
-                : kategorije.find(
-                  kategorija => kategorija.naziv === rad.kategorija
-                )?.id || ''
-            }
+            defaultValue={rad.kategorijaId}
             required
           >
             <option value="" disabled>

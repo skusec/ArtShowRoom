@@ -88,11 +88,9 @@ export default function RadPregled() {
               <td>{rad.naziv}</td>
               <td>
                 {
-                  rad.kategorijaId
-                    ? kategorije.find(
-                      kategorija => kategorija.id === Number(rad.kategorijaId)
-                    )?.naziv
-                    : rad.kategorija
+                  kategorije.find(
+                    kategorija => kategorija.id === Number(rad.kategorijaId)
+                  )?.naziv
                 }
               </td>
               <td>{rad.tehnika}</td>
