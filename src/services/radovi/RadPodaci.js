@@ -2,7 +2,7 @@ export const radovi = [
   {
     id: 1,
     naziv: 'Korijen pamćenja',
-    kategorija: 'Reljef i tekstura',
+    kategorijaId: 1,
     cijena: 250,
     tehnika: 'Akril i reljefni akril na platnu',
     dostupan: true
@@ -10,7 +10,7 @@ export const radovi = [
   {
     id: 2,
     naziv: 'Bijeli konj',
-    kategorija: 'Životinje',
+    kategorijaId: 2,
     cijena: 220,
     tehnika: 'Reljefni akril na platnu',
     dostupan: true
@@ -18,7 +18,7 @@ export const radovi = [
   {
     id: 3,
     naziv: 'Šapat magle',
-    kategorija: 'Pejzaži i atmosfera',
+    kategorijaId: 3,
     cijena: 180,
     tehnika: 'Akril na platnu',
     dostupan: false

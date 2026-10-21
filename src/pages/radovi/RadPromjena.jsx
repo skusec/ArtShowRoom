@@ -67,7 +67,7 @@ export default function RadPromjena() {
 
     promijeni({
       naziv: podaci.get('naziv'),
-      kategorija: podaci.get('kategorija'),
+      kategorijaId: Number(podaci.get('kategorijaId')),
       tehnika: podaci.get('tehnika'),
       cijena: parseFloat(podaci.get('cijena')),
       dostupan: dostupan
