@@ -139,7 +139,11 @@ export default function RadNovi() {
 
         <Row className="mt-4">
 
-          <Col>
+          <Col
+            xs={12}
+            md={6}
+            className="mb-2 mb-md-0 text-start"
+          >
             <Link
               to={RouteNames.RADOVI}
               className="btn btn-danger"
@@ -148,7 +152,11 @@ export default function RadNovi() {
             </Link>
           </Col>
 
-          <Col>
+          <Col
+            xs={12}
+            md={6}
+            className="text-start text-md-end"
+          >
             <Button
               type="submit"
               variant="success"

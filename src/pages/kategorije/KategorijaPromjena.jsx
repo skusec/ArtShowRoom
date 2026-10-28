@@ -97,7 +97,11 @@ export default function KategorijaPromjena() {
 
         <Row className="mt-4">
 
-          <Col>
+          <Col
+            xs={12}
+            md={6}
+            className="mb-2 mb-md-0 text-start"
+          >
             <Link
               to={RouteNames.KATEGORIJE}
               className="btn btn-danger"
@@ -106,7 +110,11 @@ export default function KategorijaPromjena() {
             </Link>
           </Col>
 
-          <Col>
+          <Col
+            xs={12}
+            md={6}
+            className="text-start text-md-end"
+          >
             <Button
               type="submit"
               variant="success"

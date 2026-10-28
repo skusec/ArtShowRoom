@@ -8,6 +8,8 @@ export const RouteNames = {
   KATEGORIJE: '/kategorije',
   KATEGORIJE_NOVI: '/kategorije/novi',
   KATEGORIJE_PROMJENA: '/kategorije/:id',
+
+  GENERIRANJE_PODATAKA: '/generiranje-podataka',
 };
 
 // memorija, localStorage, kasnije API

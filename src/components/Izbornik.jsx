@@ -47,6 +47,10 @@ export default function Izbornik() {
               Kategorije
             </Nav.Link>
 
+            <Nav.Link as={Link} to={RouteNames.GENERIRANJE_PODATAKA}>
+              Generiranje
+            </Nav.Link>
+
 
 
             <Nav.Link as={Link} to={RouteNames.RADOVI_NOVI}>

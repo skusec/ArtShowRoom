@@ -8,6 +8,7 @@ import Izbornik from './components/Izbornik';
 import KategorijaPregled from './pages/kategorije/KategorijaPregled';
 import KategorijaNovi from './pages/kategorije/KategorijaNovi';
 import KategorijaPromjena from './pages/kategorije/KategorijaPromjena';
+import GeneriranjePodataka from './pages/GeneriranjePodataka';
 
 import { IME_APLIKACIJE, RouteNames } from './constants';
 
@@ -51,6 +52,11 @@ function App() {
         <Route
           path={RouteNames.KATEGORIJE_PROMJENA}
           element={<KategorijaPromjena />}
+        />
+
+        <Route
+          path={RouteNames.GENERIRANJE_PODATAKA}
+          element={<GeneriranjePodataka />}
         />
 
       </Routes>
