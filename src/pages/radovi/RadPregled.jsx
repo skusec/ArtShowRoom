@@ -14,6 +14,7 @@ export default function RadPregled() {
 
   const [radovi, setRadovi] = useState([]);
   const [kategorije, setKategorije] = useState([]);
+  const [pojamPretrage, setPojamPretrage] = useState('');
   const navigate = useNavigate();
   const breakpoint = useBreakpoint();
 
@@ -22,6 +23,22 @@ export default function RadPregled() {
     ucitajRadove();
     ucitajKategorije();
   }, []);
+
+  const filtriraniRadovi = radovi.filter((rad) => {
+
+    const nazivKategorije = kategorije.find(
+      (kategorija) =>
+        kategorija.id === Number(rad.kategorijaId)
+    )?.naziv || '';
+
+    const pojam = pojamPretrage.toLowerCase();
+
+    return (
+      rad.naziv.toLowerCase().includes(pojam) ||
+      nazivKategorije.toLowerCase().includes(pojam)
+    );
+
+  });
 
 
   async function ucitajRadove() {
@@ -66,19 +83,40 @@ export default function RadPregled() {
     <>
       <h1>Pregled radova</h1>
 
+      <input
+        type="text"
+        className="form-control mb-2"
+        placeholder="Pretraži radove po nazivu ili kategoriji..."
+        value={pojamPretrage}
+        onChange={(e) => setPojamPretrage(e.target.value)}
+      />
+
+      <p>
+        Pronađeno radova: {filtriraniRadovi.length}
+      </p>
+
       <hr />
 
 
       {['xs', 'sm', 'md'].includes(breakpoint) ? (
+
+
         <RadPregledGrid
-          radovi={radovi}
+          radovi={filtriraniRadovi}
           kategorije={kategorije}
           onUredi={(id) => navigate(`/radovi/${id}`)}
           onObrisi={obrisiRad}
         />
+
+
+
+
+
+
+
       ) : (
         <RadPregledTablica
-          radovi={radovi}
+          radovi={filtriraniRadovi}
           kategorije={kategorije}
           onUredi={(id) => navigate(`/radovi/${id}`)}
           onObrisi={obrisiRad}
