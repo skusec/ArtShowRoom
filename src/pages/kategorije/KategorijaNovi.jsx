@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { RouteNames } from '../../constants';
 import KategorijaService from '../../services/kategorije/KategorijaService';
+import { KategorijaSchema } from '../../schemas/KategorijaSchema';
 
 
 export default function KategorijaNovi() {
@@ -27,22 +28,21 @@ export default function KategorijaNovi() {
 
     const podaci = new FormData(e.target);
 
-    const naziv = podaci.get('naziv');
-
-    if (!naziv || naziv.trim().length === 0) {
-      alert('Naziv kategorije je obavezan i ne smije sadržavati samo razmake!');
-      return;
-    }
-
-    if (naziv.trim().length < 3 || naziv.trim().length > 50) {
-      alert('Naziv kategorije mora imati najmanje 3, a najviše 50 znakova!');
-      return;
-    }
-
-    dodaj({
-      naziv: naziv,
+    const kategorijaZaDodavanje = {
+      naziv: podaci.get('naziv'),
       opis: podaci.get('opis')
-    });
+    };
+
+    const rezultat = KategorijaSchema.safeParse(kategorijaZaDodavanje);
+
+    if (!rezultat.success) {
+      alert(rezultat.error.issues[0].message);
+      return;
+    }
+
+   
+
+   dodaj(rezultat.data);
 
   }
 

@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { RouteNames } from '../../constants';
 import RadService from '../../services/radovi/RadService';
 import KategorijaService from '../../services/kategorije/KategorijaService';
+import { RadSchema } from '../../schemas/RadSchema';
 
 
 export default function RadNovi() {
@@ -46,35 +47,23 @@ export default function RadNovi() {
 
     const podaci = new FormData(e.target);
 
-    const naziv = podaci.get('naziv');
+    const radZaDodavanje = {
+      naziv: podaci.get('naziv'),
+      kategorijaId: Number(podaci.get('kategorijaId')),
+      tehnika: podaci.get('tehnika'),
+      cijena: Number(podaci.get('cijena')),
+      dostupan: dostupan
+    };
 
-    if (!naziv || naziv.trim().length === 0) {
-      alert('Naziv rada je obavezan i ne smije sadržavati samo razmake!');
+    const rezultat = RadSchema.safeParse(radZaDodavanje);
+
+    if (!rezultat.success) {
+      alert(rezultat.error.issues[0].message);
       return;
     }
 
-    if (naziv.trim().length < 3 || naziv.trim().length > 50) {
-      alert('Naziv rada mora imati najmanje 3, a najviše 50 znakova!');
-      return;
-    }
-
-
-const cijena = parseFloat(podaci.get('cijena'));
-
-if (isNaN(cijena)) {
-  alert('Cijena rada je obavezna!');
-  return;
-}
-
-if (cijena < 0) {
-  alert('Cijena rada ne može biti negativna!');
-  return;
-}
-
-if (cijena > 100000) {
-  alert('Cijena rada ne može biti veća od 100000 €!');
-  return;
-}
+    dodaj(rezultat.data);
+    
 
 
 

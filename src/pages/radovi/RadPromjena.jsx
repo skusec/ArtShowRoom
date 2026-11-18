@@ -5,6 +5,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { RouteNames } from '../../constants';
 import RadService from '../../services/radovi/RadService';
 import KategorijaService from '../../services/kategorije/KategorijaService';
+import { RadSchema } from '../../schemas/RadSchema';
 
 
 export default function RadPromjena() {
@@ -65,165 +66,146 @@ export default function RadPromjena() {
 
     const podaci = new FormData(e.target);
 
-    const naziv = podaci.get('naziv');
-
-if (!naziv || naziv.trim().length === 0) {
-  alert('Naziv rada je obavezan i ne smije sadržavati samo razmake!');
-  return;
-}
-
-if (naziv.trim().length < 3 || naziv.trim().length > 50) {
-  alert('Naziv rada mora imati najmanje 3, a najviše 50 znakova!');
-  return;
-}
-
-const cijena = parseFloat(podaci.get('cijena'));
-
-if (isNaN(cijena)) {
-  alert('Cijena rada je obavezna!');
-  return;
-}
-
-if (cijena < 0) {
-  alert('Cijena rada ne može biti negativna!');
-  return;
-}
-
-if (cijena > 100000) {
-  alert('Cijena rada ne može biti veća od 100000 €!');
-  return;
-}
-
-    promijeni({
-      naziv: naziv,
+    const radZaPromjenu = {
+      naziv: podaci.get('naziv'),
       kategorijaId: Number(podaci.get('kategorijaId')),
       tehnika: podaci.get('tehnika'),
-      cijena: cijena,
+      cijena: Number(podaci.get('cijena')),
       dostupan: dostupan
-    });
+    };
 
+    const rezultat = RadSchema.safeParse(radZaPromjenu);
+
+    if (!rezultat.success) {
+      alert(rezultat.error.issues[0].message);
+      return;
+    }
+
+
+
+    promijeni(rezultat.data);
   }
 
 
 
 
-  if (!rad) {
-    return <p>Učitavanje rada...</p>;
-  }
+    if (!rad) {
+      return <p>Učitavanje rada...</p>;
+    }
 
 
-  return (
-    <>
-      <h1>Promjena rada</h1>
+    return (
+      <>
+        <h1>Promjena rada</h1>
 
-      <Form onSubmit={obradiSubmit}>
+        <Form onSubmit={obradiSubmit}>
 
-        <Form.Group className="mb-3 text-start">
-          <Form.Label>Naziv</Form.Label>
+          <Form.Group className="mb-3 text-start">
+            <Form.Label>Naziv</Form.Label>
 
-          <Form.Control
-            type="text"
-            name="naziv"
-            defaultValue={rad.naziv}
-          />
-        </Form.Group>
+            <Form.Control
+              type="text"
+              name="naziv"
+              defaultValue={rad.naziv}
+            />
+          </Form.Group>
 
 
-        <Form.Group className="mb-3 text-start">
-          <Form.Label>Kategorija</Form.Label>
+          <Form.Group className="mb-3 text-start">
+            <Form.Label>Kategorija</Form.Label>
 
-          <Form.Select
-            name="kategorijaId"
-            defaultValue={rad.kategorijaId}
-            required
-          >
-            <option value="" disabled>
-              Odaberi kategoriju
-            </option>
-
-            {kategorije.map((kategorija) => (
-              <option
-                key={kategorija.id}
-                value={kategorija.id}
-              >
-                {kategorija.naziv}
+            <Form.Select
+              name="kategorijaId"
+              defaultValue={rad.kategorijaId}
+              required
+            >
+              <option value="" disabled>
+                Odaberi kategoriju
               </option>
-            ))}
-          </Form.Select>
-        </Form.Group>
+
+              {kategorije.map((kategorija) => (
+                <option
+                  key={kategorija.id}
+                  value={kategorija.id}
+                >
+                  {kategorija.naziv}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
 
 
-        <Form.Group className="mb-3 text-start">
-          <Form.Label>Tehnika</Form.Label>
+          <Form.Group className="mb-3 text-start">
+            <Form.Label>Tehnika</Form.Label>
 
-          <Form.Control
-            type="text"
-            name="tehnika"
-            defaultValue={rad.tehnika}
-          />
-        </Form.Group>
-
-
-        <Form.Group className="mb-3 text-start">
-          <Form.Label>Cijena</Form.Label>
-
-          <Form.Control
-            type="number"
-            name="cijena"
-            step="0.01"
-            defaultValue={rad.cijena}
-          />
-        </Form.Group>
+            <Form.Control
+              type="text"
+              name="tehnika"
+              defaultValue={rad.tehnika}
+            />
+          </Form.Group>
 
 
-        <Form.Group
-          className="mb-3 text-start d-flex align-items-center gap-2"
-          controlId="dostupan"
-        >
-          <Form.Label className="mb-0">
-            Dostupan
-          </Form.Label>
+          <Form.Group className="mb-3 text-start">
+            <Form.Label>Cijena</Form.Label>
 
-          <Form.Check.Input
-            type="checkbox"
-            checked={dostupan}
-            onChange={(e) => setDostupan(e.target.checked)}
-          />
-        </Form.Group>
+            <Form.Control
+              type="number"
+              name="cijena"
+              step="0.01"
+              defaultValue={rad.cijena}
+            />
+          </Form.Group>
 
 
-        <Row className="mt-4">
-
-          <Col
-            xs={12}
-            md={6}
-            className="mb-2 mb-md-0 text-start"
+          <Form.Group
+            className="mb-3 text-start d-flex align-items-center gap-2"
+            controlId="dostupan"
           >
-            <Link
-              to={RouteNames.RADOVI}
-              className="btn btn-danger"
+            <Form.Label className="mb-0">
+              Dostupan
+            </Form.Label>
+
+            <Form.Check.Input
+              type="checkbox"
+              checked={dostupan}
+              onChange={(e) => setDostupan(e.target.checked)}
+            />
+          </Form.Group>
+
+
+          <Row className="mt-4">
+
+            <Col
+              xs={12}
+              md={6}
+              className="mb-2 mb-md-0 text-start"
             >
-              Odustani
-            </Link>
-          </Col>
+              <Link
+                to={RouteNames.RADOVI}
+                className="btn btn-danger"
+              >
+                Odustani
+              </Link>
+            </Col>
 
-          <Col
-            xs={12}
-            md={6}
-            className="text-start text-md-end"
-          >
-            <Button
-              type="submit"
-              variant="success"
+            <Col
+              xs={12}
+              md={6}
+              className="text-start text-md-end"
             >
-              Spremi promjene
-            </Button>
-          </Col>
+              <Button
+                type="submit"
+                variant="success"
+              >
+                Spremi promjene
+              </Button>
+            </Col>
 
-        </Row>
+          </Row>
 
-      </Form>
-    </>
-  );
+        </Form>
+      </>
+    );
 
-}
+  }
