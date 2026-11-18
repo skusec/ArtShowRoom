@@ -1,10 +1,13 @@
 import { NumericFormat } from 'react-number-format';
 import { useEffect, useState } from 'react';
-import { Button, Table } from 'react-bootstrap';
+
 import { useNavigate } from 'react-router-dom';
 
 import RadService from '../../services/radovi/RadService';
 import KategorijaService from '../../services/kategorije/KategorijaService';
+import useBreakpoint from '../../hooks/useBreakpoint';
+import RadPregledTablica from './RadPregledTablica';
+import RadPregledGrid from './RadPregledGrid';
 
 
 export default function RadPregled() {
@@ -12,6 +15,7 @@ export default function RadPregled() {
   const [radovi, setRadovi] = useState([]);
   const [kategorije, setKategorije] = useState([]);
   const navigate = useNavigate();
+  const breakpoint = useBreakpoint();
 
 
   useEffect(() => {
@@ -64,76 +68,23 @@ export default function RadPregled() {
 
       <hr />
 
-      <Table striped bordered hover responsive>
 
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Naziv</th>
-            <th>Kategorija</th>
-            <th>Tehnika</th>
-            <th>Cijena</th>
-            <th>Dostupan</th>
-            <th>Akcije</th>
-          </tr>
-        </thead>
+      {['xs', 'sm', 'md'].includes(breakpoint) ? (
+        <RadPregledGrid
+          radovi={radovi}
+          kategorije={kategorije}
+          onUredi={(id) => navigate(`/radovi/${id}`)}
+          onObrisi={obrisiRad}
+        />
+      ) : (
+        <RadPregledTablica
+          radovi={radovi}
+          kategorije={kategorije}
+          onUredi={(id) => navigate(`/radovi/${id}`)}
+          onObrisi={obrisiRad}
+        />
+      )}
 
-        <tbody>
-
-          {radovi.map((rad) => (
-
-            <tr key={rad.id}>
-
-              <td>{rad.id}</td>
-              <td>{rad.naziv}</td>
-              <td>
-                {
-                  kategorije.find(
-                    kategorija => kategorija.id === Number(rad.kategorijaId)
-                  )?.naziv
-                }
-              </td>
-              <td>{rad.tehnika}</td>
-              <td>
-                <NumericFormat
-                  value={rad.cijena}
-                  displayType="text"
-                  thousandSeparator="."
-                  decimalSeparator=","
-                  decimalScale={2}
-                  fixedDecimalScale
-                  suffix=" €"
-                />
-              </td>
-              <td>{rad.dostupan ? 'Da' : 'Ne'}</td>
-
-              <td>
-
-                <Button
-                  variant="warning"
-                  onClick={() => navigate(`/radovi/${rad.id}`)}
-                >
-                  Uredi
-                </Button>
-
-                {' '}
-
-                <Button
-                  variant="danger"
-                  onClick={() => obrisiRad(rad.id)}
-                >
-                  Obriši
-                </Button>
-
-              </td>
-
-            </tr>
-
-          ))}
-
-        </tbody>
-
-      </Table>
     </>
   );
 
