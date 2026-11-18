@@ -51,8 +51,20 @@ export default function KategorijaPromjena() {
 
     const podaci = new FormData(e.target);
 
+    const naziv = podaci.get('naziv');
+
+    if (!naziv || naziv.trim().length === 0) {
+      alert('Naziv kategorije je obavezan i ne smije sadržavati samo razmake!');
+      return;
+    }
+
+    if (naziv.trim().length < 3 || naziv.trim().length > 50) {
+      alert('Naziv kategorije mora imati najmanje 3, a najviše 50 znakova!');
+      return;
+    }
+
     promijeni({
-      naziv: podaci.get('naziv'),
+      naziv: naziv,
       opis: podaci.get('opis')
     });
 

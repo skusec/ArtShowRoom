@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { RouteNames } from '../../constants';
 
 import KategorijaService from '../../services/kategorije/KategorijaService';
+import RadService from '../../services/radovi/RadService';
 
 export default function KategorijaPregled() {
 
@@ -27,6 +28,19 @@ export default function KategorijaPregled() {
     );
 
     if (!potvrda) {
+      return;
+    }
+
+    const odgovorRadovi = await RadService.get();
+
+    const radoviKojiKoristeKategoriju = odgovorRadovi.data.filter(
+      (rad) => Number(rad.kategorijaId) === Number(id)
+    );
+
+    if (radoviKojiKoristeKategoriju.length > 0) {
+      alert(
+        `Kategoriju nije moguće obrisati jer je koristi ${radoviKojiKoristeKategoriju.length} radova.`
+      );
       return;
     }
 

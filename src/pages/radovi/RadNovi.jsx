@@ -46,11 +46,43 @@ export default function RadNovi() {
 
     const podaci = new FormData(e.target);
 
+    const naziv = podaci.get('naziv');
+
+    if (!naziv || naziv.trim().length === 0) {
+      alert('Naziv rada je obavezan i ne smije sadržavati samo razmake!');
+      return;
+    }
+
+    if (naziv.trim().length < 3 || naziv.trim().length > 50) {
+      alert('Naziv rada mora imati najmanje 3, a najviše 50 znakova!');
+      return;
+    }
+
+
+const cijena = parseFloat(podaci.get('cijena'));
+
+if (isNaN(cijena)) {
+  alert('Cijena rada je obavezna!');
+  return;
+}
+
+if (cijena < 0) {
+  alert('Cijena rada ne može biti negativna!');
+  return;
+}
+
+if (cijena > 100000) {
+  alert('Cijena rada ne može biti veća od 100000 €!');
+  return;
+}
+
+
+
     dodaj({
       naziv: podaci.get('naziv'),
       kategorijaId: Number(podaci.get('kategorijaId')),
       tehnika: podaci.get('tehnika'),
-      cijena: parseFloat(podaci.get('cijena')),
+      cijena: cijena,
       dostupan: dostupan
     });
 
