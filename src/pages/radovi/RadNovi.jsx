@@ -60,6 +60,7 @@ export default function RadNovi() {
 
 
 
+
   async function dodaj(rad) {
 
     await RadService.dodaj(rad).then(() => {
@@ -93,6 +94,7 @@ export default function RadNovi() {
     }
 
     dodaj(rezultat.data);
+
 
 
 
@@ -186,6 +188,38 @@ export default function RadNovi() {
         </Form.Group>
 
 
+        <Form.Group className="mb-3 text-start">
+          <Form.Label>Slika rada</Form.Label>
+
+          <Form.Control
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const datoteka = e.target.files?.[0];
+
+              if (!datoteka) {
+                return;
+              }
+
+              const reader = new FileReader();
+
+              reader.onload = () => {
+                setSlika(reader.result);
+              };
+
+              reader.readAsDataURL(datoteka);
+            }}
+          />
+        </Form.Group>
+
+        <SlikaCropper
+          slika={slika}
+          onSpremi={(izrezanaSlika) => {
+            setSlika(izrezanaSlika);
+          }}
+        />
+
+
         <Row className="mt-4">
 
           <Col
@@ -197,37 +231,6 @@ export default function RadNovi() {
               to={RouteNames.RADOVI}
               className="btn btn-danger"
             >
-              <Form.Group className="mb-3 text-start">
-                <Form.Label>Slika rada</Form.Label>
-
-                <Form.Control
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const datoteka = e.target.files?.[0];
-
-                    if (!datoteka) {
-                      return;
-                    }
-
-                    const reader = new FileReader();
-
-                    reader.onload = () => {
-                      setSlika(reader.result);
-                    };
-
-                    reader.readAsDataURL(datoteka);
-                  }}
-                />
-              </Form.Group>
-
-              <SlikaCropper
-                slika={slika}
-                onSpremi={(izrezanaSlika) => {
-                  setSlika(izrezanaSlika);
-                }}
-              />
-
               Odustani
             </Link>
           </Col>
