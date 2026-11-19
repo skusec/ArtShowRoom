@@ -47,17 +47,18 @@ export default function RadPromjena() {
 
     ucitajKategorije();
 
+    async function ucitajTehnike() {
+
+      const odgovor = await TehnikaService.get();
+
+      setTehnike(odgovor.data);
+
+    }
+
+    ucitajTehnike();
+
   }, [params.id]);
 
-  async function ucitajTehnike() {
-
-    const odgovor = await TehnikaService.get();
-
-    setTehnike(odgovor.data);
-
-  }
-
-  ucitajTehnike();
 
   function promijeniOdabirTehnike(id) {
     setOdabraneTehnike((trenutneTehnike) => {
@@ -108,12 +109,8 @@ export default function RadPromjena() {
       return;
     }
 
-
-
     promijeni(rezultat.data);
   }
-
-
 
 
   if (!rad) {
