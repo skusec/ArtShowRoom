@@ -7,7 +7,7 @@ import RadService from '../../services/radovi/RadService';
 import KategorijaService from '../../services/kategorije/KategorijaService';
 import { RadSchema } from '../../schemas/RadSchema';
 import TehnikaService from '../../services/tehnike/TehnikaService';
-import SlikaCropper from '../../components/SlikaCropper';
+import SlikaCropper from '../../components/SlikeCropper';
 
 
 export default function RadNovi() {
