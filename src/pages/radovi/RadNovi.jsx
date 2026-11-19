@@ -19,6 +19,7 @@ export default function RadNovi() {
   const [tehnike, setTehnike] = useState([]);
   const [odabraneTehnike, setOdabraneTehnike] = useState([]);
   const [slika, setSlika] = useState(null);
+  const [slikaZaCrop, setSlikaZaCrop] = useState(null);
 
   useEffect(() => {
 
@@ -82,6 +83,7 @@ export default function RadNovi() {
       naziv: podaci.get('naziv'),
       kategorijaId: Number(podaci.get('kategorijaId')),
       tehnikeIds: odabraneTehnike,
+      slika: slika,
       cijena: Number(podaci.get('cijena')),
       dostupan: dostupan
     };
@@ -204,7 +206,7 @@ export default function RadNovi() {
               const reader = new FileReader();
 
               reader.onload = () => {
-                setSlika(reader.result);
+                setSlikaZaCrop(reader.result);;
               };
 
               reader.readAsDataURL(datoteka);
@@ -213,11 +215,31 @@ export default function RadNovi() {
         </Form.Group>
 
         <SlikaCropper
-          slika={slika}
+          slika={slikaZaCrop}
           onSpremi={(izrezanaSlika) => {
             setSlika(izrezanaSlika);
+            setSlikaZaCrop(null);
           }}
         />
+
+
+        {slika && !slikaZaCrop && (
+          <div className="mb-3 text-start">
+            <p className="mb-2">
+              <strong>Izrezana slika:</strong>
+            </p>
+
+            <img
+              src={slika}
+              alt="Izrezani prikaz rada"
+              style={{
+                maxWidth: '300px',
+                width: '100%',
+                height: 'auto'
+              }}
+            />
+          </div>
+        )}
 
 
         <Row className="mt-4">

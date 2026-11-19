@@ -16,6 +16,11 @@ export const RadSchema = z.object({
     .array(z.number().int().positive())
     .min(1, 'Potrebno je odabrati najmanje jednu tehniku.'),
 
+  slika: z
+    .string()
+    .nullable()
+    .optional(),
+
   cijena: z
     .number()
     .min(0, 'Cijena rada ne može biti negativna.')

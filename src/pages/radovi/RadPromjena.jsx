@@ -7,6 +7,7 @@ import RadService from '../../services/radovi/RadService';
 import KategorijaService from '../../services/kategorije/KategorijaService';
 import { RadSchema } from '../../schemas/RadSchema';
 import TehnikaService from '../../services/tehnike/TehnikaService';
+import SlikaCropper from '../../components/SlikeCropper';
 
 
 export default function RadPromjena() {
@@ -19,6 +20,8 @@ export default function RadPromjena() {
   const [kategorije, setKategorije] = useState([]);
   const [tehnike, setTehnike] = useState([]);
   const [odabraneTehnike, setOdabraneTehnike] = useState([]);
+  const [slika, setSlika] = useState(null);
+  const [slikaZaCrop, setSlikaZaCrop] = useState(null);
 
 
   useEffect(() => {
@@ -32,8 +35,10 @@ export default function RadPromjena() {
         setOdabraneTehnike(
           (odgovor.data.tehnikeIds || []).map(Number)
         );
-
+        setSlika(odgovor.data.slika || null);
       });
+
+
 
     }
 
@@ -100,6 +105,7 @@ export default function RadPromjena() {
       naziv: podaci.get('naziv'),
       kategorijaId: Number(podaci.get('kategorijaId')),
       tehnikeIds: odabraneTehnike,
+      slika: slika,
       cijena: Number(podaci.get('cijena')),
       dostupan: dostupan
     };
@@ -202,6 +208,58 @@ export default function RadPromjena() {
             onChange={(e) => setDostupan(e.target.checked)}
           />
         </Form.Group>
+
+
+        <Form.Group className="mb-3 text-start">
+          <Form.Label>Slika rada</Form.Label>
+
+          <Form.Control
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const datoteka = e.target.files?.[0];
+
+              if (!datoteka) {
+                return;
+              }
+
+              const reader = new FileReader();
+
+              reader.onload = () => {
+                setSlikaZaCrop(reader.result);
+              };
+
+              reader.readAsDataURL(datoteka);
+            }}
+          />
+        </Form.Group>
+
+        <SlikaCropper
+          slika={slikaZaCrop}
+          onSpremi={(izrezanaSlika) => {
+            setSlika(izrezanaSlika);
+            setSlikaZaCrop(null);
+          }}
+        />
+
+        {slika && !slikaZaCrop && (
+          <div className="mb-3 text-start">
+            <p className="mb-2">
+              <strong>Trenutna slika:</strong>
+            </p>
+
+            <img
+              src={slika}
+              alt="Trenutna slika rada"
+              style={{
+                maxWidth: '300px',
+                width: '100%',
+                height: 'auto'
+              }}
+            />
+          </div>
+        )}
+
 
 
         <Row className="mt-4">
