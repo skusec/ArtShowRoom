@@ -29,7 +29,9 @@ export default function RadPromjena() {
 
         setRad(odgovor.data);
         setDostupan(odgovor.data.dostupan);
-        setOdabraneTehnike(odgovor.data.tehnikeIds || []);
+        setOdabraneTehnike(
+          (odgovor.data.tehnikeIds || []).map(Number)
+        );
 
       });
 
