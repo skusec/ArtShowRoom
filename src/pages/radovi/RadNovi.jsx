@@ -6,6 +6,7 @@ import { RouteNames } from '../../constants';
 import RadService from '../../services/radovi/RadService';
 import KategorijaService from '../../services/kategorije/KategorijaService';
 import { RadSchema } from '../../schemas/RadSchema';
+import TehnikaService from '../../services/tehnike/TehnikaService';
 
 
 export default function RadNovi() {
@@ -14,6 +15,8 @@ export default function RadNovi() {
 
   const [dostupan, setDostupan] = useState(false);
   const [kategorije, setKategorije] = useState([]);
+  const [tehnike, setTehnike] = useState([]);
+  const [odabraneTehnike, setOdabraneTehnike] = useState([]);
 
   useEffect(() => {
 
@@ -27,7 +30,32 @@ export default function RadNovi() {
 
     ucitajKategorije();
 
+    async function ucitajTehnike() {
+
+      const odgovor = await TehnikaService.get();
+
+      setTehnike(odgovor.data);
+
+    }
+
+    ucitajTehnike();
+
   }, []);
+
+  function promijeniOdabirTehnike(id) {
+    setOdabraneTehnike((trenutneTehnike) => {
+
+      if (trenutneTehnike.includes(id)) {
+        return trenutneTehnike.filter(
+          tehnikaId => tehnikaId !== id
+        );
+      }
+
+      return [...trenutneTehnike, id];
+    });
+  }
+
+
 
 
   async function dodaj(rad) {
@@ -50,7 +78,7 @@ export default function RadNovi() {
     const radZaDodavanje = {
       naziv: podaci.get('naziv'),
       kategorijaId: Number(podaci.get('kategorijaId')),
-      tehnika: podaci.get('tehnika'),
+      tehnikeIds: odabraneTehnike,
       cijena: Number(podaci.get('cijena')),
       dostupan: dostupan
     };
@@ -63,17 +91,11 @@ export default function RadNovi() {
     }
 
     dodaj(rezultat.data);
-    
 
 
 
-    dodaj({
-      naziv: podaci.get('naziv'),
-      kategorijaId: Number(podaci.get('kategorijaId')),
-      tehnika: podaci.get('tehnika'),
-      cijena: cijena,
-      dostupan: dostupan
-    });
+
+
 
   }
 
@@ -120,13 +142,17 @@ export default function RadNovi() {
 
 
         <Form.Group className="mb-3 text-start">
-          <Form.Label>Tehnika</Form.Label>
+          <Form.Label>Tehnike</Form.Label>
 
-          <Form.Control
-            type="text"
-            name="tehnika"
-            required
-          />
+          {tehnike.map((tehnika) => (
+            <Form.Check
+              key={tehnika.id}
+              type="checkbox"
+              label={tehnika.naziv}
+              checked={odabraneTehnike.includes(tehnika.id)}
+              onChange={() => promijeniOdabirTehnike(tehnika.id)}
+            />
+          ))}
         </Form.Group>
 
 

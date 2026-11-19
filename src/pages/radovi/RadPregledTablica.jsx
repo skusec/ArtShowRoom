@@ -5,6 +5,7 @@ import { NumericFormat } from 'react-number-format';
 export default function RadPregledTablica({
   radovi,
   kategorije,
+  tehnike,
   onUredi,
   onObrisi
 }) {
@@ -43,7 +44,16 @@ export default function RadPregledTablica({
               }
             </td>
 
-            <td>{rad.tehnika}</td>
+            <td>
+              {rad.tehnikeIds
+                ?.map((id) =>
+                  tehnike.find(
+                    (tehnika) => tehnika.id === Number(id)
+                  )?.naziv
+                )
+                .filter(Boolean)
+                .join(', ')}
+            </td>
 
             <td>
               <NumericFormat

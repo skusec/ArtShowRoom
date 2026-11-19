@@ -5,6 +5,7 @@ import { NumericFormat } from 'react-number-format';
 export default function RadPregledGrid({
     radovi,
     kategorije,
+    tehnike,
     onUredi,
     onObrisi
 }) {
@@ -40,7 +41,15 @@ export default function RadPregledGrid({
                             </Card.Text>
 
                             <Card.Text>
-                                <strong>Tehnika:</strong> {rad.tehnika}
+                                <strong>Tehnike:</strong>{' '}
+                                {rad.tehnikeIds
+                                    ?.map((id) =>
+                                        tehnike.find(
+                                            (tehnika) => tehnika.id === Number(id)
+                                        )?.naziv
+                                    )
+                                    .filter(Boolean)
+                                    .join(', ')}
                             </Card.Text>
 
                             <Card.Text>

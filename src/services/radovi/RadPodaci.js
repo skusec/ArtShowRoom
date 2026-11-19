@@ -4,7 +4,7 @@ export const radovi = [
     naziv: 'Korijen pamćenja',
     kategorijaId: 1,
     cijena: 250,
-    tehnika: 'Akril i reljefni akril na platnu',
+    tehnikeIds: [1, 2],
     dostupan: true
   },
   {
@@ -12,7 +12,7 @@ export const radovi = [
     naziv: 'Bijeli konj',
     kategorijaId: 2,
     cijena: 220,
-    tehnika: 'Reljefni akril na platnu',
+    tehnikeIds: [2],
     dostupan: true
   },
   {
@@ -20,7 +20,7 @@ export const radovi = [
     naziv: 'Šapat magle',
     kategorijaId: 3,
     cijena: 180,
-    tehnika: 'Akril na platnu',
+    tehnikeIds: [1],
     dostupan: false
   }
 ];

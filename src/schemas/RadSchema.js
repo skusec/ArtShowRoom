@@ -12,10 +12,9 @@ export const RadSchema = z.object({
     .int()
     .positive('Potrebno je odabrati kategoriju.'),
 
-  tehnika: z
-    .string()
-    .trim()
-    .min(2, 'Tehnika rada mora imati najmanje 2 znaka.'),
+  tehnikeIds: z
+    .array(z.number().int().positive())
+    .min(1, 'Potrebno je odabrati najmanje jednu tehniku.'),
 
   cijena: z
     .number()

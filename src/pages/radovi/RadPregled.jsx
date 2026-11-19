@@ -8,12 +8,14 @@ import KategorijaService from '../../services/kategorije/KategorijaService';
 import useBreakpoint from '../../hooks/useBreakpoint';
 import RadPregledTablica from './RadPregledTablica';
 import RadPregledGrid from './RadPregledGrid';
+import TehnikaService from '../../services/tehnike/TehnikaService';
 
 
 export default function RadPregled() {
 
   const [radovi, setRadovi] = useState([]);
   const [kategorije, setKategorije] = useState([]);
+  const [tehnike, setTehnike] = useState([]);
   const [pojamPretrage, setPojamPretrage] = useState('');
   const navigate = useNavigate();
   const breakpoint = useBreakpoint();
@@ -22,6 +24,7 @@ export default function RadPregled() {
   useEffect(() => {
     ucitajRadove();
     ucitajKategorije();
+    ucitajTehnike();
   }, []);
 
   const filtriraniRadovi = radovi.filter((rad) => {
@@ -55,6 +58,14 @@ export default function RadPregled() {
     const odgovor = await KategorijaService.get();
 
     setKategorije(odgovor.data);
+
+  }
+
+  async function ucitajTehnike() {
+
+    const odgovor = await TehnikaService.get();
+
+    setTehnike(odgovor.data);
 
   }
 
@@ -104,6 +115,7 @@ export default function RadPregled() {
         <RadPregledGrid
           radovi={filtriraniRadovi}
           kategorije={kategorije}
+          tehnike={tehnike}
           onUredi={(id) => navigate(`/radovi/${id}`)}
           onObrisi={obrisiRad}
         />
@@ -118,6 +130,7 @@ export default function RadPregled() {
         <RadPregledTablica
           radovi={filtriraniRadovi}
           kategorije={kategorije}
+          tehnike={tehnike}
           onUredi={(id) => navigate(`/radovi/${id}`)}
           onObrisi={obrisiRad}
         />
