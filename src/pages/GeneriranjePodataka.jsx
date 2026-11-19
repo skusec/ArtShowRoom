@@ -4,6 +4,7 @@ import { faker } from '@faker-js/faker';
 
 import RadService from '../services/radovi/RadService';
 import KategorijaService from '../services/kategorije/KategorijaService';
+import TehnikaService from '../services/tehnike/TehnikaService';
 
 
 export default function GeneriranjePodataka() {
@@ -15,9 +16,16 @@ export default function GeneriranjePodataka() {
 
     const odgovor = await KategorijaService.get();
     const kategorije = odgovor.data;
+    const odgovorTehnike = await TehnikaService.get();
+    const tehnike = odgovorTehnike.data;
 
     if (kategorije.length === 0) {
       setPoruka('Nema kategorija za povezivanje radova.');
+      return;
+    }
+
+    if (tehnike.length === 0) {
+      setPoruka('Nema tehnika za povezivanje radova.');
       return;
     }
 
@@ -25,15 +33,21 @@ export default function GeneriranjePodataka() {
 
       const kategorija = faker.helpers.arrayElement(kategorije);
 
+      const brojTehnika = faker.number.int({
+        min: 1,
+        max: Math.min(3, tehnike.length)
+      });
+
+      const odabraneTehnike = faker.helpers
+        .shuffle([...tehnike])
+        .slice(0, brojTehnika);
+
       await RadService.dodaj({
         naziv: faker.lorem.words({ min: 2, max: 4 }),
         kategorijaId: kategorija.id,
-        tehnika: faker.helpers.arrayElement([
-          'Akril na platnu',
-          'Reljefni akril na platnu',
-          'Mješovita tehnika',
-          'Akril i tekstura na platnu'
-        ]),
+        tehnikeIds: odabraneTehnike.map(
+          (tehnika) => tehnika.id
+        ),
         cijena: faker.number.int({
           min: 100,
           max: 600
