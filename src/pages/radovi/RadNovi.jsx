@@ -7,6 +7,7 @@ import RadService from '../../services/radovi/RadService';
 import KategorijaService from '../../services/kategorije/KategorijaService';
 import { RadSchema } from '../../schemas/RadSchema';
 import TehnikaService from '../../services/tehnike/TehnikaService';
+import SlikaCropper from '../../components/SlikaCropper';
 
 
 export default function RadNovi() {
@@ -17,6 +18,7 @@ export default function RadNovi() {
   const [kategorije, setKategorije] = useState([]);
   const [tehnike, setTehnike] = useState([]);
   const [odabraneTehnike, setOdabraneTehnike] = useState([]);
+  const [slika, setSlika] = useState(null);
 
   useEffect(() => {
 
@@ -195,6 +197,37 @@ export default function RadNovi() {
               to={RouteNames.RADOVI}
               className="btn btn-danger"
             >
+              <Form.Group className="mb-3 text-start">
+                <Form.Label>Slika rada</Form.Label>
+
+                <Form.Control
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const datoteka = e.target.files?.[0];
+
+                    if (!datoteka) {
+                      return;
+                    }
+
+                    const reader = new FileReader();
+
+                    reader.onload = () => {
+                      setSlika(reader.result);
+                    };
+
+                    reader.readAsDataURL(datoteka);
+                  }}
+                />
+              </Form.Group>
+
+              <SlikaCropper
+                slika={slika}
+                onSpremi={(izrezanaSlika) => {
+                  setSlika(izrezanaSlika);
+                }}
+              />
+
               Odustani
             </Link>
           </Col>
