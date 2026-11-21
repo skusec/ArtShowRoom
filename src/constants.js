@@ -13,4 +13,4 @@ export const RouteNames = {
 };
 
 // memorija, localStorage, kasnije API
-export const DATA_SOURCE = 'localStorage';
+export const DATA_SOURCE = 'api';
