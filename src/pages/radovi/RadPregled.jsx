@@ -17,14 +17,44 @@ export default function RadPregled() {
   const [kategorije, setKategorije] = useState([]);
   const [tehnike, setTehnike] = useState([]);
   const [pojamPretrage, setPojamPretrage] = useState('');
+  const [ucitavanje, setUcitavanje] = useState(true);
+  const [greska, setGreska] = useState('');
   const navigate = useNavigate();
   const breakpoint = useBreakpoint();
 
 
   useEffect(() => {
-    ucitajRadove();
-    ucitajKategorije();
-    ucitajTehnike();
+
+    async function ucitajSve() {
+
+      try {
+        setUcitavanje(true);
+        setGreska('');
+
+        await Promise.all([
+          ucitajRadove(),
+          ucitajKategorije(),
+          ucitajTehnike()
+        ]);
+
+      } catch (error) {
+
+        console.error(error);
+
+        setGreska(
+          'Došlo je do greške pri učitavanju radova.'
+        );
+
+      } finally {
+
+        setUcitavanje(false);
+
+      }
+
+    }
+
+    ucitajSve();
+
   }, []);
 
   const filtriraniRadovi = radovi.filter((rad) => {
@@ -90,6 +120,25 @@ export default function RadPregled() {
   }
 
 
+  if (ucitavanje) {
+    return (
+      <p className="mt-5">
+        Učitavanje radova...
+      </p>
+    );
+  }
+
+  if (greska) {
+    return (
+      <p className="mt-5 text-danger">
+        {greska}
+      </p>
+    );
+  }
+
+
+
+
   return (
     <>
       <h1>Pregled radova</h1>
@@ -98,16 +147,25 @@ export default function RadPregled() {
         type="text"
         className="form-control mb-2"
         placeholder="Pretraži radove po nazivu ili kategoriji..."
+        aria-label="Pretraži radove"
         value={pojamPretrage}
         onChange={(e) => setPojamPretrage(e.target.value)}
       />
 
-      <p>
+      <p
+        aria-live="polite"
+        role="status"
+      >
         Pronađeno radova: {filtriraniRadovi.length}
       </p>
 
       <hr />
 
+      {filtriraniRadovi.length === 0 && (
+        <p className="mt-4">
+          Nema radova koji odgovaraju pretrazi.
+        </p>
+      )}
 
       {['xs', 'sm', 'md'].includes(breakpoint) ? (
 

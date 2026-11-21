@@ -11,17 +11,37 @@ export default function Home() {
   const [radovi, setRadovi] = useState([]);
   const [kategorije, setKategorije] = useState([]);
   const [odabranaKategorija, setOdabranaKategorija] = useState('sve');
+  const [ucitavanje, setUcitavanje] = useState(true);
+  const [greska, setGreska] = useState('');
 
 
   useEffect(() => {
 
     async function ucitajPodatke() {
 
-      const odgovorRadovi = await RadService.get();
-      const odgovorKategorije = await KategorijaService.get();
+      try {
+        setUcitavanje(true);
+        setGreska('');
 
-      setRadovi(odgovorRadovi.data);
-      setKategorije(odgovorKategorije.data);
+        const odgovorRadovi = await RadService.get();
+        const odgovorKategorije = await KategorijaService.get();
+
+        setRadovi(odgovorRadovi.data);
+        setKategorije(odgovorKategorije.data);
+
+      } catch (error) {
+
+        console.error(error);
+
+        setGreska(
+          'Došlo je do greške pri učitavanju galerije.'
+        );
+
+      } finally {
+
+        setUcitavanje(false);
+
+      }
 
     }
 
@@ -34,6 +54,24 @@ export default function Home() {
     : radovi.filter(
       (rad) => rad.kategorijaId === Number(odabranaKategorija)
     );
+
+
+  if (ucitavanje) {
+    return (
+      <p className="mt-5">
+        Učitavanje galerije...
+      </p>
+    );
+  }
+
+  if (greska) {
+    return (
+      <p className="mt-5 text-danger">
+        {greska}
+      </p>
+    );
+  }
+
 
 
 
@@ -85,6 +123,7 @@ export default function Home() {
                 ? 'active'
                 : ''
             }
+            aria-pressed={odabranaKategorija === 'sve'}
             onClick={() => setOdabranaKategorija('sve')}
           >
             Sve
@@ -98,6 +137,9 @@ export default function Home() {
                 odabranaKategorija === String(kategorija.id)
                   ? 'active'
                   : ''
+              }
+              aria-pressed={
+                odabranaKategorija === String(kategorija.id)
               }
               onClick={() =>
                 setOdabranaKategorija(String(kategorija.id))
@@ -114,6 +156,14 @@ export default function Home() {
 
 
         <div className="home-gallery-grid">
+
+          {filtriraniRadovi.length === 0 && (
+            <p className="home-gallery-empty">
+              Trenutno nema radova u odabranoj kategoriji.
+            </p>
+          )}
+
+
 
           {filtriraniRadovi.map((rad) => (
 

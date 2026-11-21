@@ -365,3 +365,13 @@
   color: #ffffff;
   border-color: #171717;
 }
+
+.home-gallery-empty {
+  grid-column: 1 / -1;
+  padding: 48px 20px;
+  text-align: center;
+  color: #766d64;
+  border: 1px dashed #cfc7bd;
+  border-radius: 12px;
+  background: #faf8f5;
+}
