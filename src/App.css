@@ -333,3 +333,35 @@
     min-height: 240px;
   }
 }
+
+.home-gallery-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.home-gallery-filters button {
+  padding: 8px 16px;
+  border: 1px solid #cfc7bd;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #5f574f;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.home-gallery-filters button:hover {
+  border-color: #8f8478;
+}
+
+.home-gallery-filters button.active {
+  background: #171717;
+  color: #ffffff;
+  border-color: #171717;
+}

@@ -10,6 +10,7 @@ export default function Home() {
 
   const [radovi, setRadovi] = useState([]);
   const [kategorije, setKategorije] = useState([]);
+  const [odabranaKategorija, setOdabranaKategorija] = useState('sve');
 
 
   useEffect(() => {
@@ -27,6 +28,13 @@ export default function Home() {
     ucitajPodatke();
 
   }, []);
+
+  const filtriraniRadovi = odabranaKategorija === 'sve'
+    ? radovi
+    : radovi.filter(
+      (rad) => rad.kategorijaId === Number(odabranaKategorija)
+    );
+
 
 
   return (
@@ -67,9 +75,47 @@ export default function Home() {
           </h2>
         </div>
 
+
+        <div className="home-gallery-filters">
+
+          <button
+            type="button"
+            className={
+              odabranaKategorija === 'sve'
+                ? 'active'
+                : ''
+            }
+            onClick={() => setOdabranaKategorija('sve')}
+          >
+            Sve
+          </button>
+
+          {kategorije.map((kategorija) => (
+            <button
+              key={kategorija.id}
+              type="button"
+              className={
+                odabranaKategorija === String(kategorija.id)
+                  ? 'active'
+                  : ''
+              }
+              onClick={() =>
+                setOdabranaKategorija(String(kategorija.id))
+              }
+            >
+              {kategorija.naziv}
+            </button>
+          ))}
+
+        </div>
+
+
+
+
+
         <div className="home-gallery-grid">
 
-          {radovi.map((rad) => (
+          {filtriraniRadovi.map((rad) => (
 
             <article
               key={rad.id}
