@@ -2,6 +2,7 @@ import { DATA_SOURCE } from '../../constants';
 
 import TehnikaServiceMemorija from './TehnikaServiceMemorija';
 import TehnikaServiceLocalStorage from './TehnikaServiceLocalStorage';
+import TehnikaServiceApi from './TehnikaServiceAPI';
 
 
 let Servis = null;
@@ -15,6 +16,10 @@ switch (DATA_SOURCE) {
 
   case 'localStorage':
     Servis = TehnikaServiceLocalStorage;
+    break;
+
+  case 'api':
+    Servis = TehnikaServiceApi;
     break;
 
   default:

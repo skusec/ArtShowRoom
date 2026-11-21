@@ -7,7 +7,12 @@ async function get() {
   const podaci = await odgovor.json();
 
   return {
-    data: podaci
+    data: podaci.map((rad) => ({
+      ...rad,
+      id: Number(rad.id),
+      kategorijaId: Number(rad.kategorijaId),
+      tehnikeIds: (rad.tehnikeIds || []).map(Number)
+    }))
   };
 }
 
@@ -21,7 +26,12 @@ async function getById(id) {
   const podaci = await odgovor.json();
 
   return {
-    data: podaci
+    data: {
+      ...podaci,
+      id: Number(podaci.id),
+      kategorijaId: Number(podaci.kategorijaId),
+      tehnikeIds: (podaci.tehnikeIds || []).map(Number)
+    }
   };
 }
 

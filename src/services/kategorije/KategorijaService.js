@@ -2,6 +2,7 @@ import { DATA_SOURCE } from '../../constants';
 
 import KategorijaServiceMemorija from './KategorijaServiceMemorija';
 import KategorijaServiceLocalStorage from './KategorijaServiceLocalStorage';
+import KategorijaServiceApi from './KategorijaServiceAPI';
 
 let Servis = null;
 
@@ -12,6 +13,10 @@ switch (DATA_SOURCE) {
 
   case 'localStorage':
     Servis = KategorijaServiceLocalStorage;
+    break;
+
+  case 'api':
+    Servis = KategorijaServiceApi;
     break;
 
   default:
