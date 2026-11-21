@@ -38,12 +38,28 @@ async function getById(id) {
 
 async function dodaj(rad) {
 
+  const odgovorRadovi = await fetch(API_URL);
+  const postojeciRadovi = await odgovorRadovi.json();
+
+  const najveciId = postojeciRadovi.length > 0
+    ? Math.max(
+      ...postojeciRadovi.map((postojeciRad) =>
+        Number(postojeciRad.id) || 0
+      )
+    )
+    : 0;
+
+  const noviRad = {
+    ...rad,
+    id: najveciId + 1
+  };
+
   await fetch(API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(rad)
+    body: JSON.stringify(noviRad)
   });
 
 }

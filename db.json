@@ -5,7 +5,10 @@
       "naziv": "Korijen pamćenja",
       "kategorijaId": 1,
       "cijena": 250,
-      "tehnikeIds": [1, 2],
+      "tehnikeIds": [
+        1,
+        2
+      ],
       "dostupan": true
     },
     {
@@ -13,7 +16,9 @@
       "naziv": "Bijeli konj",
       "kategorijaId": 2,
       "cijena": 220,
-      "tehnikeIds": [2],
+      "tehnikeIds": [
+        2
+      ],
       "dostupan": true
     },
     {
@@ -21,7 +26,9 @@
       "naziv": "Šapat magle",
       "kategorijaId": 3,
       "cijena": 180,
-      "tehnikeIds": [1],
+      "tehnikeIds": [
+        1
+      ],
       "dostupan": false
     }
   ],
