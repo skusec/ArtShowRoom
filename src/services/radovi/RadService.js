@@ -2,6 +2,7 @@ import { DATA_SOURCE } from '../../constants';
 
 import RadServiceMemorija from './RadServiceMemorija';
 import RadServiceLocalStorage from './RadServiceLocalStorage';
+import RadServiceApi from './RadServiceAPI';
 
 let Servis = null;
 
@@ -12,6 +13,10 @@ switch (DATA_SOURCE) {
 
   case 'localStorage':
     Servis = RadServiceLocalStorage;
+    break;
+
+  case 'api':
+    Servis = RadServiceApi;
     break;
 
   default:
