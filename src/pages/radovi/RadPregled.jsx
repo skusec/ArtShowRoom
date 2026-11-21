@@ -19,6 +19,7 @@ export default function RadPregled() {
   const [pojamPretrage, setPojamPretrage] = useState('');
   const [ucitavanje, setUcitavanje] = useState(true);
   const [greska, setGreska] = useState('');
+  const [poruka, setPoruka] = useState('');
   const navigate = useNavigate();
   const breakpoint = useBreakpoint();
 
@@ -111,6 +112,7 @@ export default function RadPregled() {
     }
 
     await RadService.obrisi(id);
+    setPoruka('Rad je uspješno obrisan.');
 
     // Odmah ukloni obrisani rad iz prikaza, bez dodatnog klika na "Radovi"
     setRadovi((trenutniRadovi) =>
@@ -142,6 +144,16 @@ export default function RadPregled() {
   return (
     <>
       <h1>Pregled radova</h1>
+
+      {poruka && (
+        <div
+          className="alert alert-success"
+          role="status"
+          aria-live="polite"
+        >
+          {poruka}
+        </div>
+      )}
 
       <input
         type="text"
