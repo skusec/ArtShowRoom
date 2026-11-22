@@ -1,3 +1,14 @@
+$showroom-dark: #171717;
+$showroom-radius: 12px;
+
+@mixin focus-ring {
+  outline: 3px solid $showroom-dark;
+  outline-offset: 3px;
+}
+
+
+
+
 .counter {
   font-size: 16px;
   padding: 5px 10px;
@@ -257,7 +268,7 @@
   overflow: hidden;
   background: #ffffff;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: $showroom-radius;
   text-align: left;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
   transition:
@@ -360,10 +371,14 @@
   border-color: #8f8478;
 }
 
+.home-gallery-filters button:focus-visible {
+  @include focus-ring;
+}
+
 .home-gallery-filters button.active {
-  background: #171717;
+  background: $showroom-dark;
   color: #ffffff;
-  border-color: #171717;
+  border-color: $showroom-dark;
 }
 
 .home-gallery-empty {
