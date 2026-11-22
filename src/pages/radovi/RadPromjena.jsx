@@ -8,7 +8,7 @@ import KategorijaService from '../../services/kategorije/KategorijaService';
 import { RadSchema } from '../../schemas/RadSchema';
 import TehnikaService from '../../services/tehnike/TehnikaService';
 import SlikaCropper from '../../components/SlikeCropper';
-
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 export default function RadPromjena() {
 
@@ -122,7 +122,9 @@ export default function RadPromjena() {
 
 
   if (!rad) {
-    return <p>Učitavanje rada...</p>;
+    return (
+      <LoadingSpinner poruka="Učitavanje rada..." />
+    );
   }
 
 

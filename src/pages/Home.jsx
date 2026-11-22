@@ -4,6 +4,7 @@ import RadService from '../services/radovi/RadService';
 import KategorijaService from '../services/kategorije/KategorijaService';
 import { Link } from 'react-router-dom';
 import { RouteNames } from '../constants';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 
 export default function Home() {
@@ -58,9 +59,7 @@ export default function Home() {
 
   if (ucitavanje) {
     return (
-      <p className="mt-5">
-        Učitavanje galerije...
-      </p>
+      <LoadingSpinner poruka="Učitavanje galerije..." />
     );
   }
 

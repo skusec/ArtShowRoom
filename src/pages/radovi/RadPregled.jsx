@@ -9,6 +9,7 @@ import useBreakpoint from '../../hooks/useBreakpoint';
 import RadPregledTablica from './RadPregledTablica';
 import RadPregledGrid from './RadPregledGrid';
 import TehnikaService from '../../services/tehnike/TehnikaService';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 
 export default function RadPregled() {
@@ -124,9 +125,7 @@ export default function RadPregled() {
 
   if (ucitavanje) {
     return (
-      <p className="mt-5">
-        Učitavanje radova...
-      </p>
+      <LoadingSpinner poruka="Učitavanje radova..." />
     );
   }
 

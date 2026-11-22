@@ -5,6 +5,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { RouteNames } from '../../constants';
 import KategorijaService from '../../services/kategorije/KategorijaService';
 import { KategorijaSchema } from '../../schemas/KategorijaSchema';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 
 export default function KategorijaPromjena() {
@@ -70,7 +71,9 @@ export default function KategorijaPromjena() {
 
 
   if (!kategorija) {
-    return <p>Učitavanje kategorije...</p>;
+    return (
+      <LoadingSpinner poruka="Učitavanje kategorije..." />
+    );
   }
 
 
