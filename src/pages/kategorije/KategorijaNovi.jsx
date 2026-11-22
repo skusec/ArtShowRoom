@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -6,9 +7,42 @@ import KategorijaService from '../../services/kategorije/KategorijaService';
 import { KategorijaSchema } from '../../schemas/KategorijaSchema';
 
 
+
 export default function KategorijaNovi() {
 
   const navigate = useNavigate();
+  const [greskaNaziv, setGreskaNaziv] = useState('');
+  const [greskaOpis, setGreskaOpis] = useState('');
+
+  function provjeriNaziv(e) {
+    const rezultat = KategorijaSchema.shape.naziv.safeParse(
+      e.target.value
+    );
+
+    if (!rezultat.success) {
+      setGreskaNaziv(
+        rezultat.error.issues[0].message
+      );
+      return;
+    }
+
+    setGreskaNaziv('');
+  }
+
+  function provjeriOpis(e) {
+    const rezultat = KategorijaSchema.shape.opis.safeParse(
+      e.target.value
+    );
+
+    if (!rezultat.success) {
+      setGreskaOpis(
+        rezultat.error.issues[0].message
+      );
+      return;
+    }
+
+    setGreskaOpis('');
+  }
 
 
   async function dodaj(kategorija) {
@@ -40,9 +74,9 @@ export default function KategorijaNovi() {
       return;
     }
 
-   
 
-   dodaj(rezultat.data);
+
+    dodaj(rezultat.data);
 
   }
 
@@ -60,7 +94,13 @@ export default function KategorijaNovi() {
             type="text"
             name="naziv"
             required
+            onBlur={provjeriNaziv}
+            isInvalid={!!greskaNaziv}
           />
+
+          <Form.Control.Feedback type="invalid">
+            {greskaNaziv}
+          </Form.Control.Feedback>
         </Form.Group>
 
 
@@ -72,7 +112,13 @@ export default function KategorijaNovi() {
             rows={3}
             name="opis"
             required
+            onBlur={provjeriOpis}
+            isInvalid={!!greskaOpis}
           />
+
+          <Form.Control.Feedback type="invalid">
+            {greskaOpis}
+          </Form.Control.Feedback>
         </Form.Group>
 
 

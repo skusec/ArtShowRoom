@@ -20,6 +20,8 @@ export default function RadNovi() {
   const [odabraneTehnike, setOdabraneTehnike] = useState([]);
   const [slika, setSlika] = useState(null);
   const [slikaZaCrop, setSlikaZaCrop] = useState(null);
+  const [greskaNaziv, setGreskaNaziv] = useState('');
+  const [greskaCijena, setGreskaCijena] = useState('');
 
   useEffect(() => {
 
@@ -56,6 +58,37 @@ export default function RadNovi() {
 
       return [...trenutneTehnike, id];
     });
+  }
+
+
+  function provjeriNaziv(e) {
+    const rezultat = RadSchema.shape.naziv.safeParse(
+      e.target.value
+    );
+
+    if (!rezultat.success) {
+      setGreskaNaziv(
+        rezultat.error.issues[0].message
+      );
+      return;
+    }
+
+    setGreskaNaziv('');
+  }
+
+  function provjeriCijenu(e) {
+    const rezultat = RadSchema.shape.cijena.safeParse(
+      Number(e.target.value)
+    );
+
+    if (!rezultat.success) {
+      setGreskaCijena(
+        rezultat.error.issues[0].message
+      );
+      return;
+    }
+
+    setGreskaCijena('');
   }
 
 
@@ -119,7 +152,13 @@ export default function RadNovi() {
             type="text"
             name="naziv"
             required
+            onBlur={provjeriNaziv}
+            isInvalid={!!greskaNaziv}
           />
+
+          <Form.Control.Feedback type="invalid">
+            {greskaNaziv}
+          </Form.Control.Feedback>
         </Form.Group>
 
 
@@ -168,9 +207,14 @@ export default function RadNovi() {
           <Form.Control
             type="number"
             name="cijena"
-            step="0.01"
             required
+            onBlur={provjeriCijenu}
+            isInvalid={!!greskaCijena}
           />
+
+          <Form.Control.Feedback type="invalid">
+            {greskaCijena}
+          </Form.Control.Feedback>
         </Form.Group>
 
 
