@@ -5,10 +5,12 @@ import { RouteNames } from '../../constants';
 
 import KategorijaService from '../../services/kategorije/KategorijaService';
 import RadService from '../../services/radovi/RadService';
+import PotvrdaModal from '../../components/PotvrdaModal';
 
 export default function KategorijaPregled() {
 
   const [kategorije, setKategorije] = useState([]);
+  const [kategorijaZaBrisanje, setKategorijaZaBrisanje] = useState(null);
 
   const navigate = useNavigate();
 
@@ -23,13 +25,6 @@ export default function KategorijaPregled() {
   }
 
   async function obrisi(id) {
-    const potvrda = window.confirm(
-      'Želiš li stvarno obrisati ovu kategoriju?'
-    );
-
-    if (!potvrda) {
-      return;
-    }
 
     const odgovorRadovi = await RadService.get();
 
@@ -41,10 +36,14 @@ export default function KategorijaPregled() {
       alert(
         `Kategoriju nije moguće obrisati jer je koristi ${radoviKojiKoristeKategoriju.length} radova.`
       );
+
+      setKategorijaZaBrisanje(null);
       return;
     }
 
     await KategorijaService.obrisi(id);
+
+    setKategorijaZaBrisanje(null);
 
     ucitajKategorije();
   }
@@ -93,7 +92,7 @@ export default function KategorijaPregled() {
 
                 <Button
                   variant="danger"
-                  onClick={() => obrisi(kategorija.id)}
+                  onClick={() => setKategorijaZaBrisanje(kategorija.id)}
                 >
                   Obriši
                 </Button>
@@ -106,6 +105,14 @@ export default function KategorijaPregled() {
           ))}
         </tbody>
       </Table>
+
+      <PotvrdaModal
+        prikazi={kategorijaZaBrisanje !== null}
+        naslov="Brisanje kategorije"
+        poruka="Želiš li stvarno obrisati ovu kategoriju?"
+        onOdustani={() => setKategorijaZaBrisanje(null)}
+        onPotvrdi={() => obrisi(kategorijaZaBrisanje)}
+      />
     </>
   );
 }

@@ -25,10 +25,11 @@
       "id": 3,
       "naziv": "Šapat magle",
       "kategorijaId": 3,
-      "cijena": 180,
       "tehnikeIds": [
         1
       ],
+      "slika": "/images/sapat-magle.webp",
+      "cijena": 180,
       "dostupan": false
     }
   ],
@@ -49,9 +50,9 @@
       "opis": "Radovi inspirirani prirodom, prostorom i atmosferom."
     },
     {
-      "id": 4,
       "naziv": "Simboli i apstrakcija",
-      "opis": "Apstraktni i simbolički umjetnički motivi."
+      "opis": "Apstraktni i simbolički umjetnički motivi.",
+      "id": 4
     }
   ],
   "tehnike": [

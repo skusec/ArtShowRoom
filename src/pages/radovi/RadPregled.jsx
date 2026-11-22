@@ -10,6 +10,7 @@ import RadPregledTablica from './RadPregledTablica';
 import RadPregledGrid from './RadPregledGrid';
 import TehnikaService from '../../services/tehnike/TehnikaService';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import PotvrdaModal from '../../components/PotvrdaModal';
 
 
 export default function RadPregled() {
@@ -21,6 +22,7 @@ export default function RadPregled() {
   const [ucitavanje, setUcitavanje] = useState(true);
   const [greska, setGreska] = useState('');
   const [poruka, setPoruka] = useState('');
+  const [radZaBrisanje, setRadZaBrisanje] = useState(null);
   const navigate = useNavigate();
   const breakpoint = useBreakpoint();
 
@@ -104,21 +106,15 @@ export default function RadPregled() {
 
   async function obrisiRad(id) {
 
-    const potvrda = window.confirm(
-      'Želiš li stvarno obrisati ovaj rad?'
-    );
-
-    if (!potvrda) {
-      return;
-    }
-
     await RadService.obrisi(id);
+
     setPoruka('Rad je uspješno obrisan.');
 
-    // Odmah ukloni obrisani rad iz prikaza, bez dodatnog klika na "Radovi"
     setRadovi((trenutniRadovi) =>
       trenutniRadovi.filter((rad) => rad.id !== id)
     );
+
+    setRadZaBrisanje(null);
 
   }
 
@@ -186,7 +182,7 @@ export default function RadPregled() {
           kategorije={kategorije}
           tehnike={tehnike}
           onUredi={(id) => navigate(`/radovi/${id}`)}
-          onObrisi={obrisiRad}
+          onObrisi={(id) => setRadZaBrisanje(id)}
         />
 
 
@@ -201,9 +197,17 @@ export default function RadPregled() {
           kategorije={kategorije}
           tehnike={tehnike}
           onUredi={(id) => navigate(`/radovi/${id}`)}
-          onObrisi={obrisiRad}
+          onObrisi={(id) => setRadZaBrisanje(id)}
         />
       )}
+
+      <PotvrdaModal
+        prikazi={radZaBrisanje !== null}
+        naslov="Brisanje rada"
+        poruka="Želiš li stvarno obrisati ovaj rad?"
+        onOdustani={() => setRadZaBrisanje(null)}
+        onPotvrdi={() => obrisiRad(radZaBrisanje)}
+      />
 
     </>
   );
