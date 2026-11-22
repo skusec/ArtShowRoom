@@ -1,0 +1,1 @@
+npx.cmd json-server --watch db.json --port 3000 npm.cmd run build  npm.cmd run preview

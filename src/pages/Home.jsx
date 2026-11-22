@@ -176,24 +176,10 @@ export default function Home() {
 
               <div className="home-art-card-image">
 
-                {rad.id === 1 && (
+                {rad.slika && (
                   <img
-                    src="/images/korijen-pamcenja.webp"
-                    alt="Korijen pamćenja"
-                  />
-                )}
-
-                {rad.id === 2 && (
-                  <img
-                    src="/images/bijeli-konj.webp"
-                    alt="Bijeli konj"
-                  />
-                )}
-
-                {rad.id === 3 && (
-                  <img
-                    src="/images/sapat-magle.webp"
-                    alt="Šapat magle"
+                    src={rad.slika}
+                    alt={rad.naziv}
                   />
                 )}
 
