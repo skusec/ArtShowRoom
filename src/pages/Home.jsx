@@ -65,7 +65,10 @@ export default function Home() {
 
   if (greska) {
     return (
-      <p className="mt-5 text-danger">
+      <p
+        className="mt-5 text-danger"
+        role="alert"
+      >
         {greska}
       </p>
     );

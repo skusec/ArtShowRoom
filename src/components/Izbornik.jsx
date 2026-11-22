@@ -22,14 +22,17 @@ export default function Izbornik() {
   }
 
   return (
-    <Navbar bg="dark" data-bs-theme="dark" expand="lg">
+    <Navbar bg="dark" data-bs-theme="dark" expand="lg" aria-label="Glavna navigacija">
       <Container>
 
         <Navbar.Brand as={Link} to={RouteNames.HOME}>
           {izvor()} {IME_APLIKACIJE}
         </Navbar.Brand>
 
-        <Navbar.Toggle aria-controls="art-show-room-navbar" />
+        <Navbar.Toggle
+          aria-controls="art-show-room-navbar"
+          aria-label="Otvori navigaciju"
+        />
 
         <Navbar.Collapse id="art-show-room-navbar">
 

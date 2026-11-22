@@ -60,6 +60,9 @@ export default function KategorijaPregled() {
       </Link>
 
       <Table striped bordered hover responsive>
+        <caption className="visually-hidden">
+          Popis kategorija umjetničkih radova
+        </caption>
         <thead>
           <tr>
             <th>ID</th>
@@ -81,6 +84,7 @@ export default function KategorijaPregled() {
                 <Button
                   variant="warning"
                   onClick={() => navigate(`/kategorije/${kategorija.id}`)}
+                  aria-label={`Uredi kategoriju ${kategorija.naziv}`}
                 >
                   Uredi
                 </Button>
@@ -93,6 +97,7 @@ export default function KategorijaPregled() {
                 <Button
                   variant="danger"
                   onClick={() => setKategorijaZaBrisanje(kategorija.id)}
+                  aria-label={`Obriši kategoriju ${kategorija.naziv}`}
                 >
                   Obriši
                 </Button>
