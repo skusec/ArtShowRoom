@@ -74,6 +74,7 @@ export default function RadPregledGrid({
                                 variant="warning"
                                 className="me-2"
                                 onClick={() => onUredi(rad.id)}
+                                aria-label={`Uredi rad ${rad.naziv}`}
                             >
                                 Uredi
                             </Button>
@@ -81,6 +82,7 @@ export default function RadPregledGrid({
                             <Button
                                 variant="danger"
                                 onClick={() => onObrisi(rad.id)}
+                                aria-label={`Obriši rad ${rad.naziv}`}
                             >
                                 Obriši
                             </Button>
