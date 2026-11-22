@@ -13,4 +13,5 @@ export const RouteNames = {
 };
 
 // memorija, localStorage, kasnije API
-export const DATA_SOURCE = 'api';
+export const DATA_SOURCE =
+  import.meta.env.VITE_DATA_SOURCE || 'api';
