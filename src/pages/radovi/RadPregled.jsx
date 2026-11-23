@@ -11,6 +11,7 @@ import RadPregledGrid from './RadPregledGrid';
 import TehnikaService from '../../services/tehnike/TehnikaService';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import PotvrdaModal from '../../components/PotvrdaModal';
+import RadDetaljiModal from '../../components/RadDetaljiModal';
 
 
 export default function RadPregled() {
@@ -23,6 +24,7 @@ export default function RadPregled() {
   const [greska, setGreska] = useState('');
   const [poruka, setPoruka] = useState('');
   const [radZaBrisanje, setRadZaBrisanje] = useState(null);
+  const [odabraniRad, setOdabraniRad] = useState(null);
   const navigate = useNavigate();
   const breakpoint = useBreakpoint();
 
@@ -186,6 +188,7 @@ export default function RadPregled() {
           tehnike={tehnike}
           onUredi={(id) => navigate(`/radovi/${id}`)}
           onObrisi={(id) => setRadZaBrisanje(id)}
+          onDetalji={(rad) => setOdabraniRad(rad)}
         />
 
 
@@ -201,8 +204,21 @@ export default function RadPregled() {
           tehnike={tehnike}
           onUredi={(id) => navigate(`/radovi/${id}`)}
           onObrisi={(id) => setRadZaBrisanje(id)}
+          onDetalji={(rad) => setOdabraniRad(rad)}
         />
       )}
+
+      <RadDetaljiModal
+        prikazi={odabraniRad !== null}
+        rad={odabraniRad}
+        kategorije={kategorije}
+        tehnike={tehnike}
+        onZatvori={() => setOdabraniRad(null)}
+        onUredi={(id) => {
+          setOdabraniRad(null);
+          navigate(`/radovi/${id}`);
+        }}
+      />
 
       <PotvrdaModal
         prikazi={radZaBrisanje !== null}

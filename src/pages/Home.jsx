@@ -5,12 +5,16 @@ import KategorijaService from '../services/kategorije/KategorijaService';
 import { Link } from 'react-router-dom';
 import { RouteNames } from '../constants';
 import LoadingSpinner from '../components/LoadingSpinner';
+import TehnikaService from '../services/tehnike/TehnikaService';
+import RadDetaljiModal from '../components/RadDetaljiModal';
 
 
 export default function Home() {
 
   const [radovi, setRadovi] = useState([]);
   const [kategorije, setKategorije] = useState([]);
+  const [tehnike, setTehnike] = useState([]);
+  const [odabraniRad, setOdabraniRad] = useState(null);
   const [odabranaKategorija, setOdabranaKategorija] = useState('sve');
   const [ucitavanje, setUcitavanje] = useState(true);
   const [greska, setGreska] = useState('');
@@ -26,9 +30,11 @@ export default function Home() {
 
         const odgovorRadovi = await RadService.get();
         const odgovorKategorije = await KategorijaService.get();
+        const odgovorTehnike = await TehnikaService.get();
 
         setRadovi(odgovorRadovi.data);
         setKategorije(odgovorKategorije.data);
+        setTehnike(odgovorTehnike.data);
 
       } catch (error) {
 
@@ -177,10 +183,17 @@ export default function Home() {
               <div className="home-art-card-image">
 
                 {rad.slika && (
-                  <img
-                    src={rad.slika}
-                    alt={rad.naziv}
-                  />
+                  <button
+                    type="button"
+                    className="home-art-card-image-button"
+                    onClick={() => setOdabraniRad(rad)}
+                    aria-label={`Otvori detalje rada ${rad.naziv}`}
+                  >
+                    <img
+                      src={rad.slika}
+                      alt={rad.naziv}
+                    />
+                  </button>
                 )}
 
               </div>
@@ -188,9 +201,15 @@ export default function Home() {
               <div className="home-art-card-content">
 
                 <h3>
-                  {rad.naziv}
+                  <button
+                    type="button"
+                    className="home-art-card-title-button"
+                    onClick={() => setOdabraniRad(rad)}
+                    aria-label={`Otvori detalje rada ${rad.naziv}`}
+                  >
+                    {rad.naziv}
+                  </button>
                 </h3>
-
                 <p>
                   {
                     kategorije.find(
@@ -209,6 +228,15 @@ export default function Home() {
         </div>
 
       </section>
+
+      <RadDetaljiModal
+        prikazi={odabraniRad !== null}
+        rad={odabraniRad}
+        kategorije={kategorije}
+        tehnike={tehnike}
+        onZatvori={() => setOdabraniRad(null)}
+      />
+
     </>
   );
 

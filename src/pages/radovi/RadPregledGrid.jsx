@@ -7,7 +7,8 @@ export default function RadPregledGrid({
     kategorije,
     tehnike,
     onUredi,
-    onObrisi
+    onObrisi,
+    onDetalji
 }) {
 
     return (
@@ -27,7 +28,14 @@ export default function RadPregledGrid({
                         <Card.Body>
 
                             <Card.Title>
-                                {rad.naziv}
+                                <button
+                                    type="button"
+                                    className="rad-naziv-link"
+                                    onClick={() => onDetalji(rad)}
+                                    aria-label={`Otvori detalje rada ${rad.naziv}`}
+                                >
+                                    {rad.naziv}
+                                </button>
                             </Card.Title>
 
                             <Card.Text>

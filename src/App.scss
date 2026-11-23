@@ -394,12 +394,10 @@ $showroom-gold: #c99a52;
 
 .showroom-navbar {
   background:
-    linear-gradient(
-      90deg,
+    linear-gradient(90deg,
       #171717 0%,
       #202020 55%,
-      #171717 100%
-    ) !important;
+      #171717 100%) !important;
 
   border-bottom: 1px solid rgba(201, 154, 82, 0.35);
   padding: 14px 0;
@@ -483,4 +481,278 @@ $showroom-gold: #c99a52;
   border-color: $showroom-gold;
   color: #171717 !important;
   transform: translateY(-1px);
+}
+
+.rad-naziv-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: $showroom-dark;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.rad-naziv-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 1px;
+  background: $showroom-gold;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+.rad-naziv-link:hover {
+  color: $showroom-gold;
+  transform: translateY(-1px);
+}
+
+.rad-naziv-link:hover::after {
+  transform: scaleX(1);
+}
+
+.rad-naziv-link:focus-visible {
+  @include focus-ring;
+}
+
+.rad-detalji-modal .modal-content {
+  border: 1px solid rgba(201, 154, 82, 0.35);
+  border-radius: $showroom-radius;
+  overflow: hidden;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+}
+
+.rad-detalji-modal .modal-header {
+  border-bottom: 1px solid rgba(23, 23, 23, 0.08);
+  padding: 20px 24px;
+}
+
+.rad-detalji-modal .modal-title {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.rad-detalji-modal .modal-body {
+  padding: 24px 28px 12px;
+  background: #faf8f4;
+}
+
+.rad-detalji-modal .modal-footer {
+  border-top: 1px solid rgba(23, 23, 23, 0.08);
+  padding: 6px 24px 8px;
+  transform: translateY(-6px);
+}
+
+.rad-detalji-slika {
+  display: block;
+  width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #171717;
+}
+
+.rad-detalji-modal .modal-content {
+  max-height: calc(100vh - 32px);
+}
+
+.rad-detalji-kategorija {
+  color: $showroom-gold;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.rad-detalji-info {
+  margin-top: 12px;
+  font-size: 18px;
+}
+
+.modal-backdrop.show {
+  opacity: 0.72;
+  backdrop-filter: blur(7px);
+}
+
+.home-art-card-image-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.home-art-card-image-button img {
+  display: block;
+  width: 100%;
+  transition: transform 0.25s ease;
+}
+
+.home-art-card-image-button:hover img {
+  transform: scale(1.025);
+}
+
+.home-art-card-title-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: $showroom-dark;
+  font: inherit;
+  font-weight: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.home-art-card-title-button:hover {
+  color: $showroom-gold;
+}
+
+.home-art-card-image-button:focus-visible,
+.home-art-card-title-button:focus-visible {
+  @include focus-ring;
+}
+
+.kategorija-naziv-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: $showroom-dark;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.kategorija-naziv-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 1px;
+  background: $showroom-gold;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+.kategorija-naziv-link:hover {
+  color: $showroom-gold;
+  transform: translateY(-1px);
+}
+
+.kategorija-naziv-link:hover::after {
+  transform: scaleX(1);
+}
+
+.kategorija-naziv-link:focus-visible {
+  @include focus-ring;
+}
+
+.kategorija-radovi-modal .modal-content {
+  border: 1px solid rgba(201, 154, 82, 0.35);
+  border-radius: $showroom-radius;
+  overflow: hidden;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+}
+
+.kategorija-radovi-modal .modal-header {
+  border-bottom: 1px solid rgba(23, 23, 23, 0.08);
+  padding: 20px 24px;
+}
+
+.kategorija-radovi-modal .modal-body {
+  padding: 24px;
+  background: #faf8f4;
+}
+
+.kategorija-radovi-opis {
+  margin-bottom: 24px;
+  color: #666;
+}
+
+.kategorija-radovi-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.kategorija-rad-item {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px;
+  background: #ffffff;
+  border: 1px solid rgba(23, 23, 23, 0.08);
+  border-radius: 10px;
+}
+
+.kategorija-rad-slika {
+  width: 110px;
+  height: 80px;
+  object-fit: contain;
+  object-position: center;
+  background: #171717;
+  border-radius: 8px;
+}
+
+.kategorija-rad-podaci h3 {
+  margin-bottom: 6px;
+  font-size: 18px;
+}
+
+.kategorija-rad-podaci p {
+  margin-bottom: 4px;
+}
+
+.kategorija-radovi-empty {
+  padding: 28px 20px;
+  text-align: center;
+  background: rgba(201, 154, 82, 0.08);
+  border: 1px dashed rgba(201, 154, 82, 0.5);
+  border-radius: 10px;
+  color: #555;
+}
+
+.kategorija-rad-slika-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.kategorija-rad-naziv-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: $showroom-dark;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.kategorija-rad-naziv-button:hover {
+  color: $showroom-gold;
+}
+
+.kategorija-rad-slika-button:focus-visible,
+.kategorija-rad-naziv-button:focus-visible {
+  @include focus-ring;
 }

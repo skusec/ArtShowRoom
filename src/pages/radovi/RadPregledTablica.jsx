@@ -7,7 +7,8 @@ export default function RadPregledTablica({
   kategorije,
   tehnike,
   onUredi,
-  onObrisi
+  onObrisi,
+  onDetalji
 }) {
 
   return (
@@ -37,7 +38,16 @@ export default function RadPregledTablica({
 
             <td>{rad.id}</td>
 
-            <td>{rad.naziv}</td>
+            <td>
+              <button
+                type="button"
+                className="rad-naziv-link"
+                onClick={() => onDetalji(rad)}
+                aria-label={`Otvori detalje rada ${rad.naziv}`}
+              >
+                {rad.naziv}
+              </button>
+            </td>
 
             <td>
               {
