@@ -1,32 +1,22 @@
 import { Container, Nav, Navbar } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
-import { DATA_SOURCE, IME_APLIKACIJE, RouteNames } from '../constants';
+import { IME_APLIKACIJE, RouteNames } from '../constants';
 
-import { FaMemory } from 'react-icons/fa';
-import { GrStatusUnknown, GrVirtualStorage } from 'react-icons/gr';
+import { FaPalette } from 'react-icons/fa';
+
 
 export default function Izbornik() {
 
-  function izvor() {
-    switch (DATA_SOURCE) {
-      case 'memorija':
-        return <FaMemory title="Memorija" />;
 
-      case 'localStorage':
-        return <GrVirtualStorage title="Local storage" />;
-
-      default:
-        return <GrStatusUnknown title="Nepoznato" />;
-    }
-  }
 
   return (
-    <Navbar bg="dark" data-bs-theme="dark" expand="lg" aria-label="Glavna navigacija">
+    <Navbar bg="dark" data-bs-theme="dark" expand="lg" aria-label="Glavna navigacija" className="showroom-navbar">
       <Container>
 
-        <Navbar.Brand as={Link} to={RouteNames.HOME}>
-          {izvor()} {IME_APLIKACIJE}
+        <Navbar.Brand as={Link} to={RouteNames.HOME} className="showroom-brand">
+          <FaPalette className="showroom-brand-icon" aria-hidden="true" />
+          <span>{IME_APLIKACIJE}</span>
         </Navbar.Brand>
 
         <Navbar.Toggle
@@ -36,27 +26,31 @@ export default function Izbornik() {
 
         <Navbar.Collapse id="art-show-room-navbar">
 
-          <Nav className="me-auto">
+          <Nav className="me-auto showroom-nav">
 
-            <Nav.Link as={Link} to={RouteNames.HOME}>
+            <Nav.Link as={NavLink} to={RouteNames.HOME}>
               Početna
             </Nav.Link>
 
-            <Nav.Link as={Link} to={RouteNames.RADOVI}>
+            <Nav.Link as={NavLink} to={RouteNames.RADOVI}>
               Radovi
             </Nav.Link>
 
-            <Nav.Link as={Link} to={RouteNames.KATEGORIJE}>
+            <Nav.Link as={NavLink} to={RouteNames.KATEGORIJE}>
               Kategorije
             </Nav.Link>
 
-            <Nav.Link as={Link} to={RouteNames.GENERIRANJE_PODATAKA}>
+            <Nav.Link as={NavLink} to={RouteNames.GENERIRANJE_PODATAKA}>
               Generiranje
             </Nav.Link>
 
 
 
-            <Nav.Link as={Link} to={RouteNames.RADOVI_NOVI}>
+            <Nav.Link
+              as={NavLink}
+              to={RouteNames.RADOVI_NOVI}
+              className="showroom-nav-cta"
+            >
               Novi rad
             </Nav.Link>
 

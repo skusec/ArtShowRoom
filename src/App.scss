@@ -1,5 +1,6 @@
 $showroom-dark: #171717;
 $showroom-radius: 12px;
+$showroom-gold: #c99a52;
 
 @mixin focus-ring {
   outline: 3px solid $showroom-dark;
@@ -389,4 +390,97 @@ $showroom-radius: 12px;
   border: 1px dashed #cfc7bd;
   border-radius: 12px;
   background: #faf8f5;
+}
+
+.showroom-navbar {
+  background:
+    linear-gradient(
+      90deg,
+      #171717 0%,
+      #202020 55%,
+      #171717 100%
+    ) !important;
+
+  border-bottom: 1px solid rgba(201, 154, 82, 0.35);
+  padding: 14px 0;
+}
+
+.showroom-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+
+.showroom-brand-icon {
+  color: $showroom-gold;
+  font-size: 24px;
+}
+
+.showroom-nav {
+  gap: 8px;
+}
+
+.showroom-nav .nav-link {
+  position: relative;
+  padding: 8px 12px !important;
+  color: rgba(255, 255, 255, 0.72) !important;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.showroom-nav .nav-link::after {
+  content: '';
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 3px;
+  height: 1px;
+  background: $showroom-gold;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.2s ease;
+}
+
+.showroom-nav .nav-link:hover {
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+.showroom-nav .nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+.showroom-nav .nav-link.active {
+  color: #ffffff !important;
+}
+
+.showroom-nav .nav-link.active::after {
+  transform: scaleX(1);
+}
+
+.showroom-nav .showroom-nav-cta {
+  margin-left: 8px;
+  padding: 8px 16px !important;
+  border: 1px solid rgba(201, 154, 82, 0.65);
+  border-radius: 999px;
+  color: #f1dfc0 !important;
+}
+
+.showroom-nav .showroom-nav-cta::after {
+  display: none;
+}
+
+.showroom-nav .showroom-nav-cta:hover,
+.showroom-nav .showroom-nav-cta.active {
+  background: $showroom-gold;
+  border-color: $showroom-gold;
+  color: #171717 !important;
+  transform: translateY(-1px);
 }
