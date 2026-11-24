@@ -23,6 +23,9 @@ export default function RadPromjena() {
   const [slika, setSlika] = useState(null);
   const [slikaZaCrop, setSlikaZaCrop] = useState(null);
   const [greska, setGreska] = useState('');
+  const [greskaNaziv, setGreskaNaziv] = useState('');
+  const [greskaCijena, setGreskaCijena] = useState('');
+  const [greskaSpremanja, setGreskaSpremanja] = useState('');
 
 
   useEffect(() => {
@@ -98,17 +101,61 @@ export default function RadPromjena() {
     });
   }
 
+  function provjeriNaziv(e) {
+
+    const rezultat = RadSchema.shape.naziv.safeParse(
+      e.target.value
+    );
+
+    if (!rezultat.success) {
+      setGreskaNaziv(rezultat.error.issues[0].message);
+      return;
+    }
+
+    setGreskaNaziv('');
+
+  }
+
+  function provjeriCijenu(e) {
+
+    const rezultat = RadSchema.shape.cijena.safeParse(
+      Number(e.target.value)
+    );
+
+    if (!rezultat.success) {
+      setGreskaCijena(rezultat.error.issues[0].message);
+      return;
+    }
+
+    setGreskaCijena('');
+
+  }
+
+
+
 
   async function promijeni(radZaPromjenu) {
 
-    await RadService.promijeni(
-      params.id,
-      radZaPromjenu
-    ).then(() => {
+    try {
+
+      setGreskaSpremanja('');
+
+      await RadService.promijeni(
+        params.id,
+        radZaPromjenu
+      );
 
       navigate(RouteNames.RADOVI);
 
-    });
+    } catch (error) {
+
+      console.error(error);
+
+      setGreskaSpremanja(
+        'Došlo je do greške pri spremanju promjena.'
+      );
+
+    }
 
   }
 
@@ -130,8 +177,24 @@ export default function RadPromjena() {
 
     const rezultat = RadSchema.safeParse(radZaPromjenu);
 
+    setGreskaNaziv('');
+    setGreskaCijena('');
+    setGreskaSpremanja('');
+
     if (!rezultat.success) {
-      alert(rezultat.error.issues[0].message);
+
+      rezultat.error.issues.forEach((issue) => {
+
+        if (issue.path[0] === 'naziv') {
+          setGreskaNaziv(issue.message);
+        } else if (issue.path[0] === 'cijena') {
+          setGreskaCijena(issue.message);
+        } else {
+          setGreskaSpremanja(issue.message);
+        }
+
+      });
+
       return;
     }
 
@@ -172,6 +235,15 @@ export default function RadPromjena() {
 
       <Form onSubmit={obradiSubmit}>
 
+        {greskaSpremanja && (
+          <div
+            className="alert alert-danger"
+            role="alert"
+          >
+            {greskaSpremanja}
+          </div>
+        )}
+
         <Form.Group className="mb-3 text-start">
           <Form.Label>Naziv</Form.Label>
 
@@ -179,7 +251,13 @@ export default function RadPromjena() {
             type="text"
             name="naziv"
             defaultValue={rad.naziv}
+            onBlur={provjeriNaziv}
+            isInvalid={!!greskaNaziv}
           />
+
+          <Form.Control.Feedback type="invalid">
+            {greskaNaziv}
+          </Form.Control.Feedback>
         </Form.Group>
 
 
@@ -229,8 +307,15 @@ export default function RadPromjena() {
             type="number"
             name="cijena"
             step="0.01"
+            required
             defaultValue={rad.cijena}
+            onBlur={provjeriCijenu}
+            isInvalid={!!greskaCijena}
           />
+
+          <Form.Control.Feedback type="invalid">
+            {greskaCijena}
+          </Form.Control.Feedback>
         </Form.Group>
 
 

@@ -15,6 +15,9 @@ export default function KategorijaPromjena() {
 
   const [kategorija, setKategorija] = useState(null);
   const [greska, setGreska] = useState('');
+  const [greskaNaziv, setGreskaNaziv] = useState('');
+  const [greskaOpis, setGreskaOpis] = useState('');
+  const [greskaSpremanja, setGreskaSpremanja] = useState('');
 
 
   useEffect(() => {
@@ -26,6 +29,9 @@ export default function KategorijaPromjena() {
       try {
 
         setGreska('');
+        setGreskaNaziv('');
+        setGreskaOpis('');
+        setGreskaSpremanja('');
         setKategorija(null);
 
         const odgovor =
@@ -63,16 +69,60 @@ export default function KategorijaPromjena() {
   }, [params.id]);
 
 
+  function provjeriNaziv(e) {
+
+    const rezultat = KategorijaSchema.shape.naziv.safeParse(
+      e.target.value
+    );
+
+    if (!rezultat.success) {
+      setGreskaNaziv(rezultat.error.issues[0].message);
+      return;
+    }
+
+    setGreskaNaziv('');
+
+  }
+
+
+  function provjeriOpis(e) {
+
+    const rezultat = KategorijaSchema.shape.opis.safeParse(
+      e.target.value
+    );
+
+    if (!rezultat.success) {
+      setGreskaOpis(rezultat.error.issues[0].message);
+      return;
+    }
+
+    setGreskaOpis('');
+
+  }
+
+
   async function promijeni(kategorijaZaPromjenu) {
 
-    await KategorijaService.promijeni(
-      params.id,
-      kategorijaZaPromjenu
-    ).then(() => {
+    try {
+
+      setGreskaSpremanja('');
+
+      await KategorijaService.promijeni(
+        params.id,
+        kategorijaZaPromjenu
+      );
 
       navigate(RouteNames.KATEGORIJE);
 
-    });
+    } catch (error) {
+
+      console.error(error);
+
+      setGreskaSpremanja(
+        'Došlo je do greške pri spremanju promjena.'
+      );
+
+    }
 
   }
 
@@ -88,11 +138,29 @@ export default function KategorijaPromjena() {
       opis: podaci.get('opis')
     };
 
-    const rezultat = KategorijaSchema.safeParse(kategorijaZaPromjenu);
+    const rezultat =
+      KategorijaSchema.safeParse(kategorijaZaPromjenu);
+
+    setGreskaNaziv('');
+    setGreskaOpis('');
+    setGreskaSpremanja('');
 
     if (!rezultat.success) {
-      alert(rezultat.error.issues[0].message);
+
+      rezultat.error.issues.forEach((issue) => {
+
+        if (issue.path[0] === 'naziv') {
+          setGreskaNaziv(issue.message);
+        } else if (issue.path[0] === 'opis') {
+          setGreskaOpis(issue.message);
+        } else {
+          setGreskaSpremanja(issue.message);
+        }
+
+      });
+
       return;
+
     }
 
     promijeni(rezultat.data);
@@ -120,6 +188,7 @@ export default function KategorijaPromjena() {
     );
   }
 
+
   if (!kategorija) {
     return (
       <LoadingSpinner poruka="Učitavanje kategorije..." />
@@ -131,9 +200,21 @@ export default function KategorijaPromjena() {
     <>
       <h1>Promjena kategorije</h1>
 
-      <Form onSubmit={obradiSubmit}>
+      <Form onSubmit={obradiSubmit} noValidate>
 
-        <Form.Group className="mb-3 text-start">
+        {greskaSpremanja && (
+          <div
+            className="alert alert-danger"
+            role="alert"
+          >
+            {greskaSpremanja}
+          </div>
+        )}
+
+        <Form.Group
+          className="mb-3 text-start"
+          controlId="naziv"
+        >
           <Form.Label>Naziv</Form.Label>
 
           <Form.Control
@@ -141,11 +222,24 @@ export default function KategorijaPromjena() {
             name="naziv"
             defaultValue={kategorija.naziv}
             required
+            onBlur={provjeriNaziv}
+            isInvalid={!!greskaNaziv}
+            aria-describedby="greskaNaziv"
           />
+
+          <Form.Control.Feedback
+            type="invalid"
+            id="greskaNaziv"
+          >
+            {greskaNaziv}
+          </Form.Control.Feedback>
         </Form.Group>
 
 
-        <Form.Group className="mb-3 text-start">
+        <Form.Group
+          className="mb-3 text-start"
+          controlId="opis"
+        >
           <Form.Label>Opis</Form.Label>
 
           <Form.Control
@@ -154,7 +248,17 @@ export default function KategorijaPromjena() {
             name="opis"
             defaultValue={kategorija.opis}
             required
+            onBlur={provjeriOpis}
+            isInvalid={!!greskaOpis}
+            aria-describedby="greskaOpis"
           />
+
+          <Form.Control.Feedback
+            type="invalid"
+            id="greskaOpis"
+          >
+            {greskaOpis}
+          </Form.Control.Feedback>
         </Form.Group>
 
 

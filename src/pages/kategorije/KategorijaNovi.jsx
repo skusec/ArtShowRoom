@@ -7,51 +7,72 @@ import KategorijaService from '../../services/kategorije/KategorijaService';
 import { KategorijaSchema } from '../../schemas/KategorijaSchema';
 
 
-
 export default function KategorijaNovi() {
 
   const navigate = useNavigate();
+
   const [greskaNaziv, setGreskaNaziv] = useState('');
   const [greskaOpis, setGreskaOpis] = useState('');
+  const [greskaSpremanja, setGreskaSpremanja] = useState('');
+  const [spremanje, setSpremanje] = useState(false);
+
 
   function provjeriNaziv(e) {
+
     const rezultat = KategorijaSchema.shape.naziv.safeParse(
       e.target.value
     );
 
     if (!rezultat.success) {
-      setGreskaNaziv(
-        rezultat.error.issues[0].message
-      );
+      setGreskaNaziv(rezultat.error.issues[0].message);
       return;
     }
 
     setGreskaNaziv('');
+
   }
 
+
   function provjeriOpis(e) {
+
     const rezultat = KategorijaSchema.shape.opis.safeParse(
       e.target.value
     );
 
     if (!rezultat.success) {
-      setGreskaOpis(
-        rezultat.error.issues[0].message
-      );
+      setGreskaOpis(rezultat.error.issues[0].message);
       return;
     }
 
     setGreskaOpis('');
+
   }
 
 
   async function dodaj(kategorija) {
 
-    await KategorijaService.dodaj(kategorija).then(() => {
+    try {
+
+      setSpremanje(true);
+      setGreskaSpremanja('');
+
+      await KategorijaService.dodaj(kategorija);
 
       navigate(RouteNames.KATEGORIJE);
 
-    });
+    } catch (error) {
+
+      console.error(error);
+
+      setGreskaSpremanja(
+        'Došlo je do greške pri spremanju nove kategorije.'
+      );
+
+    } finally {
+
+      setSpremanje(false);
+
+    }
 
   }
 
@@ -60,6 +81,8 @@ export default function KategorijaNovi() {
 
     e.preventDefault();
 
+    if (spremanje) return;
+
     const podaci = new FormData(e.target);
 
     const kategorijaZaDodavanje = {
@@ -67,14 +90,30 @@ export default function KategorijaNovi() {
       opis: podaci.get('opis')
     };
 
-    const rezultat = KategorijaSchema.safeParse(kategorijaZaDodavanje);
+    const rezultat =
+      KategorijaSchema.safeParse(kategorijaZaDodavanje);
+
+    setGreskaNaziv('');
+    setGreskaOpis('');
+    setGreskaSpremanja('');
 
     if (!rezultat.success) {
-      alert(rezultat.error.issues[0].message);
+
+      rezultat.error.issues.forEach((issue) => {
+
+        if (issue.path[0] === 'naziv') {
+          setGreskaNaziv(issue.message);
+        } else if (issue.path[0] === 'opis') {
+          setGreskaOpis(issue.message);
+        } else {
+          setGreskaSpremanja(issue.message);
+        }
+
+      });
+
       return;
+
     }
-
-
 
     dodaj(rezultat.data);
 
@@ -85,9 +124,22 @@ export default function KategorijaNovi() {
     <>
       <h1>Nova kategorija</h1>
 
-      <Form onSubmit={obradiSubmit}>
+      <Form onSubmit={obradiSubmit} noValidate>
 
-        <Form.Group className="mb-3 text-start">
+        {greskaSpremanja && (
+          <div
+            className="alert alert-danger"
+            role="alert"
+          >
+            {greskaSpremanja}
+          </div>
+        )}
+
+
+        <Form.Group
+          className="mb-3 text-start"
+          controlId="naziv"
+        >
           <Form.Label>Naziv</Form.Label>
 
           <Form.Control
@@ -96,15 +148,22 @@ export default function KategorijaNovi() {
             required
             onBlur={provjeriNaziv}
             isInvalid={!!greskaNaziv}
+            aria-describedby="greskaNaziv"
           />
 
-          <Form.Control.Feedback type="invalid">
+          <Form.Control.Feedback
+            type="invalid"
+            id="greskaNaziv"
+          >
             {greskaNaziv}
           </Form.Control.Feedback>
         </Form.Group>
 
 
-        <Form.Group className="mb-3 text-start">
+        <Form.Group
+          className="mb-3 text-start"
+          controlId="opis"
+        >
           <Form.Label>Opis</Form.Label>
 
           <Form.Control
@@ -114,9 +173,13 @@ export default function KategorijaNovi() {
             required
             onBlur={provjeriOpis}
             isInvalid={!!greskaOpis}
+            aria-describedby="greskaOpis"
           />
 
-          <Form.Control.Feedback type="invalid">
+          <Form.Control.Feedback
+            type="invalid"
+            id="greskaOpis"
+          >
             {greskaOpis}
           </Form.Control.Feedback>
         </Form.Group>
@@ -145,8 +208,11 @@ export default function KategorijaNovi() {
             <Button
               type="submit"
               variant="success"
+              disabled={spremanje}
             >
-              Dodaj novu kategoriju
+              {spremanje
+                ? 'Spremanje...'
+                : 'Dodaj novu kategoriju'}
             </Button>
           </Col>
 
