@@ -4,7 +4,7 @@ import KategorijaServiceMemorija from './KategorijaServiceMemorija';
 import KategorijaServiceLocalStorage from './KategorijaServiceLocalStorage';
 import KategorijaServiceApi from './KategorijaServiceAPI';
 
-let Servis = null;
+let Servis;
 
 switch (DATA_SOURCE) {
   case 'memorija':

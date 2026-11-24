@@ -1,6 +1,5 @@
-import { NumericFormat } from 'react-number-format';
-import { useEffect, useState } from 'react';
 
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import RadService from '../../services/radovi/RadService';
@@ -34,14 +33,20 @@ export default function RadPregled() {
     async function ucitajSve() {
 
       try {
+
         setUcitavanje(true);
         setGreska('');
 
-        await Promise.all([
-          ucitajRadove(),
-          ucitajKategorije(),
-          ucitajTehnike()
-        ]);
+        const [odgovorRadovi, odgovorKategorije, odgovorTehnike] =
+          await Promise.all([
+            RadService.get(),
+            KategorijaService.get(),
+            TehnikaService.get()
+          ]);
+
+        setRadovi([...odgovorRadovi.data]);
+        setKategorije(odgovorKategorije.data);
+        setTehnike(odgovorTehnike.data);
 
       } catch (error) {
 
@@ -80,30 +85,11 @@ export default function RadPregled() {
   });
 
 
-  async function ucitajRadove() {
 
-    const odgovor = await RadService.get();
 
-    // Nova kopija arraya da React uvijek registrira promjenu
-    setRadovi([...odgovor.data]);
 
-  }
 
-  async function ucitajKategorije() {
 
-    const odgovor = await KategorijaService.get();
-
-    setKategorije(odgovor.data);
-
-  }
-
-  async function ucitajTehnike() {
-
-    const odgovor = await TehnikaService.get();
-
-    setTehnike(odgovor.data);
-
-  }
 
 
   async function obrisiRad(id) {

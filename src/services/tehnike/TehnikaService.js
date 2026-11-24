@@ -5,7 +5,7 @@ import TehnikaServiceLocalStorage from './TehnikaServiceLocalStorage';
 import TehnikaServiceApi from './TehnikaServiceAPI';
 
 
-let Servis = null;
+let Servis;
 
 
 switch (DATA_SOURCE) {

@@ -4,7 +4,7 @@ import RadServiceMemorija from './RadServiceMemorija';
 import RadServiceLocalStorage from './RadServiceLocalStorage';
 import RadServiceApi from './RadServiceAPI';
 
-let Servis = null;
+let Servis;
 
 switch (DATA_SOURCE) {
   case 'memorija':
