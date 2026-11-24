@@ -9,6 +9,7 @@ import KategorijaPregled from './pages/kategorije/KategorijaPregled';
 import KategorijaNovi from './pages/kategorije/KategorijaNovi';
 import KategorijaPromjena from './pages/kategorije/KategorijaPromjena';
 import GeneriranjePodataka from './pages/GeneriranjePodataka';
+import NotFound from './pages/NotFound';
 
 import { IME_APLIKACIJE, RouteNames } from './constants';
 
@@ -57,6 +58,11 @@ function App() {
         <Route
           path={RouteNames.GENERIRANJE_PODATAKA}
           element={<GeneriranjePodataka />}
+        />
+
+        <Route
+          path="*"
+          element={<NotFound />}
         />
 
       </Routes>

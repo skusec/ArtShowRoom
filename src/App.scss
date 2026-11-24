@@ -756,3 +756,75 @@ $showroom-gold: #c99a52;
 .kategorija-rad-naziv-button:focus-visible {
   @include focus-ring;
 }
+
+// 404 - Stranica nije pronađena
+
+.showroom-not-found {
+  padding: 80px 24px;
+  text-align: center;
+  background: linear-gradient(
+    180deg,
+    #ffffff,
+    #f5f2eb
+  );
+  border-bottom: 1px solid var(--border);
+
+  .showroom-not-found-kicker {
+    margin-bottom: 16px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: #7c7368;
+  }
+
+  .showroom-not-found-code {
+    font-size: clamp(100px, 18vw, 200px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -5px;
+    color: $showroom-gold;
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    margin-bottom: 20px;
+    font-size: clamp(28px, 5vw, 42px);
+    color: $showroom-dark;
+  }
+
+  .showroom-not-found-opis {
+    max-width: 520px;
+    margin: 0 auto 32px;
+    font-size: 18px;
+    line-height: 1.7;
+    color: #6f675f;
+  }
+
+  .showroom-not-found-button {
+    display: inline-block;
+    padding: 12px 28px;
+    border: 1px solid $showroom-gold;
+    border-radius: 999px;
+    background: $showroom-dark;
+    color: #f1dfc0;
+    text-decoration: none;
+    font-weight: 500;
+
+    transition:
+      background 0.2s ease,
+      color 0.2s ease;
+
+    &:hover {
+      background: $showroom-gold;
+      color: $showroom-dark;
+    }
+
+    &:focus-visible {
+      @include focus-ring;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 56px 20px;
+  }
+}
