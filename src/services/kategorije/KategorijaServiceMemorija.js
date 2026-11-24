@@ -34,6 +34,10 @@ async function dodaj(kategorija) {
 async function promijeni(id, kategorija) {
   const index = nadiIndex(id);
 
+  if (index === -1) {
+    throw new Error('Kategorija nije pronađena.');
+  }
+
   kategorije[index] = {
     ...kategorije[index],
     ...kategorija
@@ -46,9 +50,14 @@ function nadiIndex(id) {
   );
 }
 
+
 // 4/4 Delete od CRUD
 async function obrisi(id) {
   const index = nadiIndex(id);
+
+  if (index === -1) {
+    throw new Error('Kategorija nije pronađena.');
+  }
 
   kategorije.splice(index, 1);
 }

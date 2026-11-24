@@ -24,8 +24,13 @@ async function dodaj(rad) {
 }
 
 // 3/4 Update od CRUD
+
 async function promijeni(id, rad) {
   const index = nadiIndex(id);
+
+  if (index === -1) {
+    throw new Error('Rad nije pronađen.');
+  }
 
   radovi[index] = {
     ...radovi[index],
@@ -39,9 +44,17 @@ function nadiIndex(id) {
   );
 }
 
+
+
 // 4/4 Delete od CRUD
+
 async function obrisi(id) {
   const index = nadiIndex(id);
+
+  if (index === -1) {
+    throw new Error('Rad nije pronađen.');
+  }
+
   radovi.splice(index, 1);
 }
 

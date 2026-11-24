@@ -72,6 +72,10 @@ async function promijeni(id, kategorija) {
     kategorija => kategorija.id === Number(id)
   );
 
+  if (index === -1) {
+    throw new Error('Kategorija nije pronađena.');
+  }
+
   kategorije[index] = {
     ...kategorije[index],
     ...kategorija

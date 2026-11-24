@@ -70,6 +70,10 @@ async function promijeni(id, rad) {
     rad => rad.id === Number(id)
   );
 
+  if (index === -1) {
+    throw new Error('Rad nije pronađen.');
+  }
+
   radovi[index] = {
     ...radovi[index],
     ...rad

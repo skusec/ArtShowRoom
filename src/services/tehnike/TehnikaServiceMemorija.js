@@ -37,11 +37,18 @@ async function promijeni(id, tehnika) {
     tehnika => tehnika.id === Number(id)
   );
 
+  if (index === -1) {
+    throw new Error('Tehnika nije pronađena.');
+  }
+
   tehnike[index] = {
     ...tehnike[index],
     ...tehnika
   };
 }
+
+
+
 
 async function obrisi(id) {
   tehnike = tehnike.filter(
