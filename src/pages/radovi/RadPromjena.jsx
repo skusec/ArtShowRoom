@@ -22,47 +22,65 @@ export default function RadPromjena() {
   const [odabraneTehnike, setOdabraneTehnike] = useState([]);
   const [slika, setSlika] = useState(null);
   const [slikaZaCrop, setSlikaZaCrop] = useState(null);
+  const [greska, setGreska] = useState('');
 
 
   useEffect(() => {
 
-    async function ucitajRad() {
+    let aktivno = true;
 
-      await RadService.getById(params.id).then((odgovor) => {
+    async function ucitajSve() {
 
-        setRad(odgovor.data);
-        setDostupan(odgovor.data.dostupan);
+      try {
+
+        setGreska('');
+        setRad(null);
+
+        const odgovorRad = await RadService.getById(params.id);
+
+        if (!aktivno) return;
+
+        if (!odgovorRad.data?.id) {
+          setGreska('Traženi rad nije pronađen.');
+          return;
+        }
+
+        const [odgovorKategorije, odgovorTehnike] =
+          await Promise.all([
+            KategorijaService.get(),
+            TehnikaService.get()
+          ]);
+
+        if (!aktivno) return;
+
+        setKategorije(odgovorKategorije.data);
+        setTehnike(odgovorTehnike.data);
+
+        setDostupan(odgovorRad.data.dostupan);
+
         setOdabraneTehnike(
-          (odgovor.data.tehnikeIds || []).map(Number)
+          (odgovorRad.data.tehnikeIds || []).map(Number)
         );
-        setSlika(odgovor.data.slika || null);
-      });
 
+        setSlika(odgovorRad.data.slika || null);
+        setRad(odgovorRad.data);
 
+      } catch (error) {
 
-    }
+        if (!aktivno) return;
 
-    ucitajRad();
+        console.error(error);
+        setGreska('Došlo je do greške pri učitavanju rada.');
 
-    async function ucitajKategorije() {
-
-      const odgovor = await KategorijaService.get();
-
-      setKategorije(odgovor.data);
+      }
 
     }
 
-    ucitajKategorije();
+    ucitajSve();
 
-    async function ucitajTehnike() {
-
-      const odgovor = await TehnikaService.get();
-
-      setTehnike(odgovor.data);
-
-    }
-
-    ucitajTehnike();
+    return () => {
+      aktivno = false;
+    };
 
   }, [params.id]);
 
@@ -120,6 +138,26 @@ export default function RadPromjena() {
     promijeni(rezultat.data);
   }
 
+
+  if (greska) {
+    return (
+      <>
+        <div
+          className="alert alert-danger mt-4"
+          role="alert"
+        >
+          {greska}
+        </div>
+
+        <Link
+          to={RouteNames.RADOVI}
+          className="btn btn-secondary"
+        >
+          Povratak na pregled radova
+        </Link>
+      </>
+    );
+  }
 
   if (!rad) {
     return (

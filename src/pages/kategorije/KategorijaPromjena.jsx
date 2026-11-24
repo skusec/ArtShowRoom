@@ -14,21 +14,51 @@ export default function KategorijaPromjena() {
   const params = useParams();
 
   const [kategorija, setKategorija] = useState(null);
+  const [greska, setGreska] = useState('');
 
 
   useEffect(() => {
 
+    let aktivno = true;
+
     async function ucitajKategoriju() {
 
-      await KategorijaService.getById(params.id).then((odgovor) => {
+      try {
+
+        setGreska('');
+        setKategorija(null);
+
+        const odgovor =
+          await KategorijaService.getById(params.id);
+
+        if (!aktivno) return;
+
+        if (!odgovor.data?.id) {
+          setGreska('Tražena kategorija nije pronađena.');
+          return;
+        }
 
         setKategorija(odgovor.data);
 
-      });
+      } catch (error) {
+
+        if (!aktivno) return;
+
+        console.error(error);
+
+        setGreska(
+          'Došlo je do greške pri učitavanju kategorije.'
+        );
+
+      }
 
     }
 
     ucitajKategoriju();
+
+    return () => {
+      aktivno = false;
+    };
 
   }, [params.id]);
 
@@ -69,6 +99,26 @@ export default function KategorijaPromjena() {
 
   }
 
+
+  if (greska) {
+    return (
+      <>
+        <div
+          className="alert alert-danger mt-4"
+          role="alert"
+        >
+          {greska}
+        </div>
+
+        <Link
+          to={RouteNames.KATEGORIJE}
+          className="btn btn-secondary"
+        >
+          Povratak na pregled kategorija
+        </Link>
+      </>
+    );
+  }
 
   if (!kategorija) {
     return (
