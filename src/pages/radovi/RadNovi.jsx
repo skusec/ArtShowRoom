@@ -207,6 +207,7 @@ export default function RadNovi() {
           <Form.Control
             type="number"
             name="cijena"
+            step="0.01"
             required
             onBlur={provjeriCijenu}
             isInvalid={!!greskaCijena}

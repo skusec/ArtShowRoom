@@ -9,6 +9,7 @@ import PotvrdaModal from '../../components/PotvrdaModal';
 import KategorijaRadoviModal from '../../components/KategorijaRadoviModal';
 import TehnikaService from '../../services/tehnike/TehnikaService';
 import RadDetaljiModal from '../../components/RadDetaljiModal';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 export default function KategorijaPregled() {
 
@@ -18,13 +19,49 @@ export default function KategorijaPregled() {
   const [odabranaKategorija, setOdabranaKategorija] = useState(null);
   const [tehnike, setTehnike] = useState([]);
   const [odabraniRad, setOdabraniRad] = useState(null);
+  const [ucitavanje, setUcitavanje] = useState(true);
+  const [greska, setGreska] = useState('');
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    ucitajKategorije();
-    ucitajRadove();
-    ucitajTehnike();
+
+    async function ucitajSve() {
+
+      try {
+
+        setUcitavanje(true);
+        setGreska('');
+
+        const [odgovorKategorije, odgovorRadovi, odgovorTehnike] =
+          await Promise.all([
+            KategorijaService.get(),
+            RadService.get(),
+            TehnikaService.get()
+          ]);
+
+        setKategorije(odgovorKategorije.data);
+        setRadovi(odgovorRadovi.data);
+        setTehnike(odgovorTehnike.data);
+
+      } catch (error) {
+
+        console.error(error);
+
+        setGreska(
+          'Došlo je do greške pri učitavanju kategorija.'
+        );
+
+      } finally {
+
+        setUcitavanje(false);
+
+      }
+
+    }
+
+    ucitajSve();
+
   }, []);
 
   async function ucitajKategorije() {
@@ -33,17 +70,9 @@ export default function KategorijaPregled() {
     setKategorije(odgovor.data);
   }
 
-  async function ucitajRadove() {
-    const odgovor = await RadService.get();
 
-    setRadovi(odgovor.data);
-  }
 
-  async function ucitajTehnike() {
-    const odgovor = await TehnikaService.get();
 
-    setTehnike(odgovor.data);
-  }
 
   async function obrisi(id) {
 
@@ -67,6 +96,23 @@ export default function KategorijaPregled() {
     setKategorijaZaBrisanje(null);
 
     ucitajKategorije();
+  }
+
+  if (ucitavanje) {
+    return (
+      <LoadingSpinner poruka="Učitavanje kategorija..." />
+    );
+  }
+
+  if (greska) {
+    return (
+      <div
+        className="alert alert-danger mt-4"
+        role="alert"
+      >
+        {greska}
+      </div>
+    );
   }
 
   return (
