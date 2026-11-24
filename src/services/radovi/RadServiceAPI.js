@@ -1,8 +1,9 @@
 const API_URL = 'http://localhost:3000/radovi';
+import apiFetch from '../apiFetch';
 
 async function get() {
 
-  const odgovor = await fetch(API_URL);
+  const odgovor = await apiFetch(API_URL);
 
   const podaci = await odgovor.json();
 
@@ -19,7 +20,7 @@ async function get() {
 
 async function getById(id) {
 
-  const odgovor = await fetch(
+  const odgovor = await apiFetch(
     `${API_URL}/${id}`
   );
 
@@ -38,7 +39,7 @@ async function getById(id) {
 
 async function dodaj(rad) {
 
-  const odgovorRadovi = await fetch(API_URL);
+  const odgovorRadovi = await apiFetch(API_URL);
   const postojeciRadovi = await odgovorRadovi.json();
 
   const najveciId = postojeciRadovi.length > 0
@@ -54,7 +55,7 @@ async function dodaj(rad) {
     id: najveciId + 1
   };
 
-  await fetch(API_URL, {
+  await apiFetch(API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -67,7 +68,7 @@ async function dodaj(rad) {
 
 async function promijeni(id, rad) {
 
-  await fetch(
+  await apiFetch(
     `${API_URL}/${id}`,
     {
       method: 'PUT',
@@ -83,7 +84,7 @@ async function promijeni(id, rad) {
 
 async function obrisi(id) {
 
-  await fetch(
+  await apiFetch(
     `${API_URL}/${id}`,
     {
       method: 'DELETE'

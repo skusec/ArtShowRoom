@@ -1,8 +1,9 @@
 const API_URL = 'http://localhost:3000/kategorije';
+import apiFetch from '../apiFetch';
 
 async function get() {
 
-    const odgovor = await fetch(API_URL);
+    const odgovor = await apiFetch(API_URL);
 
     const podaci = await odgovor.json();
 
@@ -17,7 +18,7 @@ async function get() {
 
 async function getById(id) {
 
-    const odgovor = await fetch(
+    const odgovor = await apiFetch(
         `${API_URL}/${id}`
     );
 
@@ -34,7 +35,7 @@ async function getById(id) {
 
 async function dodaj(kategorija) {
 
-    await fetch(API_URL, {
+    await apiFetch(API_URL, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -47,7 +48,7 @@ async function dodaj(kategorija) {
 
 async function promijeni(id, kategorija) {
 
-    await fetch(
+    await apiFetch(
         `${API_URL}/${id}`,
         {
             method: 'PUT',
@@ -63,7 +64,7 @@ async function promijeni(id, kategorija) {
 
 async function obrisi(id) {
 
-    await fetch(
+    await apiFetch(
         `${API_URL}/${id}`,
         {
             method: 'DELETE'
